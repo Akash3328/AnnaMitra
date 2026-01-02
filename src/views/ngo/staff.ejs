@@ -1,0 +1,119 @@
+<%- include('../partials/header') %>
+
+<%- include('../partials/navbar-dark') %>
+
+<div class="d-flex am-dark" style="height: 95vh;">
+    <%- include('../partials/sidebar-dark'); %>
+    
+    <div class="content w-100 p-4 ngo-dashboard" style="overflow-y: auto;">
+        <div class="w-100 text-white">
+            <div class="mb-4">
+                <h4>Your staff</h4>
+                <p class="mb-3" style="color: var(--am-darktheme-font);">
+                    This is your staff — the team of volunteers and members supporting your NGO. Use this dashboard to view and manage your volunteers team.
+                </p>
+            </div>
+            
+            <div class="mb-5 p-4 rounded" style="background-color: var(--am-darktheme-light);">
+                <div class="d-flex justify-content-between align-items-center border-bottom border-secondary mb-4"
+                    style="color: var(--am-darktheme-font);">
+                    <h3>Volunteers</h3>
+                    <!-- <a href="/volunteer/ngos" style="text-decoration: none; color: var(--am-darktheme-font);">
+                        <h5>View all</h5>
+                    </a> -->
+                </div>
+                <div class="table-responsive am-dark-table">
+                    <table class="table align-middle rounded-2 shadow-sm overflow-hidden border-secondary">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Profile</th>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Tasks Completed</th>
+                                <th>NGOs Joined</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                
+                        <tbody>
+                
+                            <% volunteers.forEach((volunteer, index)=> { %>
+                
+                                <tr>
+                                    <td>
+                                        <%= index + 1 %>
+                                    </td>
+                
+                                    <td>
+                                        <img src="<%= volunteer.profilePicture || 'https://randomuser.me/api/portraits/lego/4.jpg' %>"
+                                            alt="Profile" class="rounded-circle" width="50" height="50">
+                                    </td>
+                
+                                    <td>
+                                        <%= volunteer.firstName %>
+                                            <%= volunteer.lastName %>
+                                    </td>
+                
+                                    <td>
+                                        <i class="fas fa-phone-alt me-1" style="color: #bababa;"></i>
+                                        +91 <%= volunteer.userId.contact %>
+                                    </td>
+                
+                                    <td>
+                                        <span class="badge badge-type rounded-4 px-3 py-2 m-1 text-white" style="font-size: 0.8rem;">
+                                            <%= volunteer.participationHistory?.length || 0 %>
+                                        </span>
+                                    </td>
+                
+                                    <td>
+                                        <span class="badge bg-primary px-3 py-2 rounded-pill">
+                                            <%= volunteer.joinedNGOs?.length || 0 %>
+                                        </span>
+                                    </td>
+                
+                                    <td>
+                                        <button class="btn btn-sm btn-danger" onclick="removeVolunteer('<%= volunteer.userId._id %>')">
+                                            <i class="fas fa-user-times me-1"></i> Remove
+                                        </button>
+                                    </td>
+                                </tr>
+                
+                                <% }) %>
+                
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function removeVolunteer(volunteerId) {
+        if (!confirm("Are you sure you want to remove this volunteer from your NGO?")) {
+            return;
+        }
+
+        fetch(`/ngo/<%= user._id %>/volunteers/${volunteerId}`, {
+            method: "DELETE"
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showAlert("success", "Volunteer removed successfully.");
+                    location.reload();
+                } else {
+                    showAlert("danger", data.message || "Failed to remove volunteer.");
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                showAlert("danger", "Server error while removing volunteer.");
+            });
+    }
+</script>
+
+<%- include('../partials/footer') %>

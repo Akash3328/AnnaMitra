@@ -1,0 +1,118 @@
+<%- include('../partials/header') %>
+
+<%- include('../partials/navbar-dark') %>
+
+<div class="d-flex am-dark" style="height: 95vh;">
+
+    <%- include('../partials/sidebar-dark') %>
+    
+    <div class="content w-100 p-4 ngo-dashboard" style="overflow-y: auto;">
+        <div class="w-100 text-white">
+            <div class="mb-4">
+                <h4>Notifications</h4>
+                <p>Stay updated with your volunteer activities</p>
+            </div>
+            <!-- Notifications Section -->
+
+            <div class="mb-5 p-4 rounded notifications-wrapper" style="background-color: var(--am-darktheme-light);">
+
+                <div class="d-flex justify-content-between align-items-center border-bottom border-secondary mb-4"
+                    style="color: var(--am-darktheme-font);">
+                    <h3>Notifications</h3>
+                </div>
+
+                <% if (!notifications || notifications.length === 0) { %>
+                    <p class="text-center text-secondary py-4">No notifications available</p>
+                <% } %>
+
+                <% notifications.forEach(notification => { 
+                    const now = new Date();
+                    const createdAt = new Date(notification.createdAt);
+                    const diffMs = now - createdAt;
+
+                    const seconds = Math.floor(diffMs / 1000);
+                    const minutes = Math.floor(seconds / 60);
+                    const hours = Math.floor(minutes / 60);
+                    const days = Math.floor(hours / 24);
+
+                    let timeText = "";
+
+                    if (seconds < 60) {
+                        timeText = `${seconds} seconds ago`;
+                    } else if (minutes < 60) {
+                        timeText = `${minutes} minutes ago`;
+                    } else if (hours < 24) {
+                        timeText = `${hours} hours ago`;
+                    } else if (days < 7) {
+                        timeText = `${days} days ago`;
+                    } else {
+                        timeText = createdAt.toLocaleString();
+                    }
+
+                    let iconClass = "bi-bell text-info";
+                    if (notification.type === "success") iconClass = "bi-check-circle-fill text-success";
+                    if (notification.type === "danger") iconClass = "bi-x-circle-fill text-danger";
+                %>
+
+                <a href="<%= notification.redirectUrl ? notification.redirectUrl : '#' %>" style="text-decoration: none;">
+                    <div class="notification-item d-flex justify-content-between align-items-start p-3 rounded mb-3 <%= notification.notReaded ? 'new' : '' %>">
+                        <div class="d-flex">
+                            <i class="bi <%= iconClass %> me-3 fs-4"></i>
+                            <div>
+                                <h6 class="mb-1 fw-semibold text-white"><%= notification.title %></h6>
+                                <p class="mb-1 text-white"><%= notification.message %></p>
+                                <small class="text-secondary"><%= timeText %></small>
+                            </div>
+                        </div>
+
+                        <div>
+                            <!-- ✅ Delete Button -->
+                            <button class="btn text-danger" onclick="deleteNotification(event, '<%= notification._id %>')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+
+                            <% if (notification.notReaded) { %>
+                                <p class="text-white small mt-1">New!</p>
+                            <% } %>
+                        </div>
+                    </div>
+                </a>
+                <% }) %>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function deleteNotification(e, notificationId) {
+        e.preventDefault();   // ✅ Stops <a> navigation
+        e.stopPropagation(); // ✅ Stops bubbling to parent <a>
+
+        if (confirm('Are you sure you want to delete this notification?')) {
+            fetch(`/notifications/${notificationId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    showAlert('success', 'Notification deleted successfully');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    showAlert('danger', 'Failed to delete notification');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('danger', 'An error occurred while deleting the notification');
+            });
+        }
+    }
+</script>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,832 @@
+<%- include('../partials/header') %>
+
+<style>
+    /* NGO Profile css */
+
+    :root {
+        --bg-dark: #0b1120;
+        /* Main page background */
+        --card-dark: #111827;
+        /* Card background */
+        --input-bg: #1f2937;
+        /* Input background */
+        --border-color: #374151;
+        /* Borders */
+        --text-main: #f9fafb;
+        /* Primary text */
+        --text-muted: #9ca3af;
+        /* Secondary text */
+        --accent: #3b82f6;
+        /* Link/Icon color */
+    }
+
+    body {
+        background-color: var(--bg-dark);
+        color: var(--text-main);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+    }
+
+    /* --- Typography & Utilities --- */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: var(--text-main);
+        font-weight: 600;
+    }
+
+    .text-muted-custom {
+        color: var(--text-muted) !important;
+    }
+
+    /* --- Cards --- */
+    .card-custom {
+        background-color: var(--card-dark);
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .section-subtitle {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-bottom: 1.5rem;
+        display: block;
+    }
+
+    /* --- Banner & Profile --- */
+    .banner-area {
+        height: 160px;
+        background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+        border-radius: 0.75rem 0.75rem 0 0;
+        position: relative;
+    }
+
+    .profile-header-card {
+        padding: 0;
+        border: 1px solid var(--border-color);
+        background-color: var(--card-dark);
+        border-radius: 0.75rem;
+        margin-bottom: 2rem;
+        overflow: hidden;
+    }
+
+    .profile-info-bar {
+        padding: 1.5rem 2rem;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+        background-color: #1f2937;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 4px solid var(--card-dark);
+        font-size: 1.5rem;
+        color: var(--text-muted);
+        position: absolute;
+        top: -40px;
+        left: 2rem;
+    }
+
+    .profile-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        display: block;
+    }
+
+    .profile-names {
+        margin-left: 90px;
+        /* Space for avatar */
+        margin-top: -10px;
+    }
+
+    /* --- Forms & Inputs (Dark Theme) --- */
+    .form-control,
+    .form-select {
+        background-color: var(--input-bg);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        font-size: 0.9rem;
+        padding: 0.6rem 0.75rem;
+    }
+
+    .form-control:focus {
+        background-color: var(--input-bg);
+        border-color: var(--accent);
+        color: var(--text-main);
+        box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+    }
+
+    .form-label {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        font-weight: 500;
+        margin-bottom: 0.3rem;
+    }
+
+    /* --- Buttons --- */
+    .btn-light-custom {
+        background-color: white;
+        color: black;
+        border: none;
+        font-weight: 500;
+        font-size: 0.85rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .btn-light-custom:hover {
+        background-color: #e5e7eb;
+    }
+
+    .btn-outline-custom {
+        background-color: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        font-size: 0.85rem;
+    }
+
+    .btn-outline-custom:hover {
+        background-color: var(--input-bg);
+        color: white;
+    }
+
+    .btn-danger-custom {
+        background-color: #7f1d1d;
+        border: 1px solid #991b1b;
+        color: #fecaca;
+        width: 100%;
+        text-align: left;
+        margin-top: 0.5rem;
+    }
+
+    .btn-dark-block {
+        background-color: var(--input-bg);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        width: 100%;
+        text-align: left;
+        padding: 0.6rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    /* --- Badges & Tags --- */
+    .tag-badge {
+        background-color: #1f2937;
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        display: inline-flex;
+        align-items: center;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .tag-remove {
+        margin-left: 6px;
+        cursor: pointer;
+        color: var(--text-muted);
+        font-size: 0.8rem;
+    }
+
+    .tag-remove:hover {
+        color: #ef4444;
+    }
+
+    /* --- Stats Cards --- */
+    .stat-box {
+        background-color: #1f2937;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .stat-value {
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+    }
+
+    /* --- File Upload Mock --- */
+    .upload-zone {
+        border: 2px dashed var(--border-color);
+        background-color: rgba(31, 41, 55, 0.5);
+        border-radius: 0.5rem;
+        padding: 2rem;
+        text-align: center;
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+        cursor: pointer;
+    }
+
+    .file-item {
+        background-color: var(--input-bg);
+        border: 1px solid var(--border-color);
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+
+    /* --- Toggle Switch Custom --- */
+    .form-check-input {
+        background-color: var(--input-bg);
+        border-color: var(--border-color);
+    }
+
+    .form-check-input:checked {
+        background-color: var(--text-main);
+        border-color: var(--text-main);
+    }
+
+    /* --- View/Edit Mode Toggling Logic --- */
+    /* By default, we are in VIEW mode. */
+
+    /* Hide edit elements by default */
+    .edit-mode-only {
+        display: none !important;
+    }
+
+    /* When body has class 'editing', switch visibility */
+    body.editing .view-mode-only {
+        display: none !important;
+    }
+
+    body.editing .edit-mode-only {
+        display: block !important;
+    }
+
+    body.editing .d-flex.edit-mode-only {
+        display: flex !important;
+    }
+
+    body.editing .d-inline-flex.edit-mode-only {
+        display: inline-flex !important;
+    }
+
+    /* Icon Helper */
+    .icon-small {
+        width: 16px;
+        margin-right: 6px;
+        color: var(--text-muted);
+    }
+</style>
+
+<%- include('../partials/navbar-dark') %>
+
+<div class="d-flex am-dark" style="height: 95vh;">
+    <%- include('../partials/sidebar-dark'); %>
+    
+    <div class="content w-100 p-4 ngo-dashboard" style="overflow-y: auto;">
+        <div class="py-4">
+        
+            <!-- Top Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="mb-1">Manage Account</h2>
+                    <p class="text-muted-custom mb-0">View and update your organization profile</p>
+                </div>
+                <div>
+                    <!-- View Mode Button -->
+                    <button class="btn btn-light-custom view-mode-only" id="btnEditProfile">
+                        <i class="fa-regular fa-pen-to-square me-2"></i>Edit Profile
+                    </button>
+        
+                    <!-- Edit Mode Buttons -->
+                    <div class="edit-mode-only">
+                        <button class="btn btn-light-custom me-2" id="btnSave">
+                            <i class="fa-regular fa-floppy-disk me-2"></i>Save Changes
+                        </button>
+                        <button class="btn btn-outline-custom" id="btnCancel">
+                            <i class="fa-solid fa-xmark me-2"></i>Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Profile Banner & Main Info -->
+            <div class="profile-header-card">
+                <div class="banner-area d-flex justify-content-end align-items-start p-3">
+                    <% if (ngoProfile && ngoProfile.bannerPicture) { %>
+                        <img src="/<%= ngoProfile.bannerPicture %>" 
+                             style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover;">
+                    <% } %>
+
+                    <label class="btn btn-dark-block w-auto edit-mode-only btn-sm bg-black bg-opacity-50 border-0 text-white mb-0">
+                        <i class="fa-solid fa-camera me-2"></i>Change Banner
+                        <input type="file" id="bannerImage" name="bannerImage" accept="image/*" style="display:none;">
+                    </label>
+                </div>
+                <div class="profile-info-bar">
+                    <div class="profile-avatar">
+                        <% if (ngoProfile && ngoProfile.profilePicture) { %>
+                            <img src="/<%= ngoProfile.profilePicture %>" alt="NGO Logo">
+                        <% } else { %>
+                            <span><i class="fa-regular fa-building"></i></span>
+                        <% } %>
+                        <div class="edit-mode-only position-absolute top-0 end-0 p-1">
+                            <label class="badge bg-secondary rounded-circle" style="cursor:pointer;">
+                                <i class="fa-solid fa-camera"></i>
+                                <input type="file" id="profileImage" name="profileImage" accept="image/*" style="display:none;">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="profile-names">
+                        <h3 class="mb-0 view-mode-only" id="view-org-name">
+                            <%= ngoProfile?.organizationName || 'Your Organization' %>
+                        </h3>
+                        <input type="text" class="form-control edit-mode-only" id="edit-org-name"
+                               value="<%= ngoProfile?.organizationName || '' %>">
+                        <small class="text-muted-custom view-mode-only" id="view-reg-number">
+                            Registration: <%= ngoProfile?.registrationNumber || '—' %>
+                        </small>
+                        <input type="text" class="form-control mt-2 edit-mode-only" id="edit-reg-number"
+                               value="<%= ngoProfile?.registrationNumber || '' %>">
+                    </div>
+                </div>
+            </div>
+        
+            <div class="row">
+                <!-- Left Column: Main Form Data -->
+                <div class="col-lg-8">
+        
+                    <!-- Organization Details -->
+                    <div class="card-custom">
+                        <h5 class="section-title">Organization Details</h5>
+                        <span class="section-subtitle">Basic information about your organization</span>
+        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Organization Name</label>
+                                <div class="view-mode-only fw-medium" id="view-org-name-main">
+                                    <i class="fa-regular fa-building icon-small"></i>
+                                    <%= ngoProfile?.organizationName || 'Your Organization' %>
+                                </div>
+                                <input type="text" class="form-control edit-mode-only" id="edit-org-name-main"
+                                       value="<%= ngoProfile?.organizationName || '' %>">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Registration Number</label>
+                                <div class="view-mode-only fw-medium" id="view-registration-number">
+                                    <i class="fa-solid fa-hashtag icon-small"></i>
+                                    <%= ngoProfile?.registrationNumber || '—' %>
+                                </div>
+                                <input type="text" class="form-control edit-mode-only" id="edit-registration-number"
+                                       value="<%= ngoProfile?.registrationNumber || '' %>">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Registered Under</label>
+                                <div class="view-mode-only fw-medium" id="view-registered-under">
+                                    <i class="fa-solid fa-scale-balanced icon-small"></i>
+                                    <%= ngoProfile?.registeredUnder || '—' %>
+                                </div>
+                                <input type="text" class="form-control edit-mode-only" id="edit-registered-under"
+                                       value="<%= ngoProfile?.registeredUnder || '' %>">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Website</label>
+                                <div class="view-mode-only fw-medium text-white" id="view-website">
+                                    <i class="fa-solid fa-globe icon-small"></i>
+                                    <%= ngoProfile?.website || '—' %>
+                                </div>
+                                <input type="text" class="form-control edit-mode-only" id="edit-website"
+                                       value="<%= ngoProfile?.website || '' %>">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <div class="view-mode-only fw-medium" id="view-email">
+                                    <i class="fa-regular fa-envelope icon-small"></i>
+                                    <%= user.email %>
+                                </div>
+                                <input type="email" class="form-control edit-mode-only" id="edit-email"
+                                       value="<%= user.email %>">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Contact Number</label>
+                                <div class="view-mode-only fw-medium" id="view-contact">
+                                    <i class="fa-solid fa-phone icon-small"></i>
+                                    +91 <%= user.contact %>
+                                </div>
+                                <input type="text" class="form-control edit-mode-only" id="edit-contact"
+                                       value="<%= user.contact %>">
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Address Information -->
+                    <div class="card-custom">
+                        <h5 class="section-title">Address Information</h5>
+                        <span class="section-subtitle">Organization location details</span>
+        
+                        <div class="mb-3">
+                            <label class="form-label">Street Address</label>
+                            <div class="view-mode-only fw-medium" id="view-address">
+                                <i class="fa-solid fa-location-dot icon-small"></i>
+                                <%= ngoProfile?.address || '—' %>
+                            </div>
+                            <input type="text" class="form-control edit-mode-only" id="edit-address"
+                                   value="<%= ngoProfile?.address || '' %>">
+                        </div>
+        
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">City</label>
+                                <div class="view-mode-only fw-medium" id="view-city">
+                                    <%= ngoProfile?.city || '—' %>
+                                </div>
+                                <input type="text" class="form-control edit-mode-only" id="edit-city"
+                                       value="<%= ngoProfile?.city || '' %>">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">State</label>
+                                <div class="view-mode-only fw-medium" id="view-state">
+                                    <%= ngoProfile?.state || '—' %>
+                                </div>
+                                <input type="text" class="form-control edit-mode-only" id="edit-state"
+                                       value="<%= ngoProfile?.state || '' %>">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Pincode</label>
+                                <div class="view-mode-only fw-medium" id="view-pincode">
+                                    <%= ngoProfile?.pincode || '—' %>
+                                </div>
+                                <input type="text" class="form-control edit-mode-only" id="edit-pincode"
+                                       value="<%= ngoProfile?.pincode || '' %>">
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- About & Mission -->
+                    <div class="card-custom">
+                        <h5 class="section-title">About & Mission</h5>
+                        <span class="section-subtitle">Organization mission and vision</span>
+        
+                        <div class="mb-3">
+                            <label class="form-label">About Organization</label>
+                            <div class="view-mode-only text-muted-custom small lh-base" id="view-about">
+                                <%= ngoProfile?.about || 'No about info added yet.' %>
+                            </div>
+                            <textarea class="form-control edit-mode-only" id="edit-about" rows="3"><%= ngoProfile?.about || '' %></textarea>
+                        </div>
+        
+                        <div class="mb-3">
+                            <label class="form-label">Mission Statement</label>
+                            <div class="view-mode-only text-muted-custom small lh-base" id="view-mission">
+                                <%= ngoProfile?.missionStatement || 'No mission statement added.' %>
+                            </div>
+                            <textarea class="form-control edit-mode-only" id="edit-mission" rows="2"><%= ngoProfile?.missionStatement || '' %></textarea>
+                        </div>
+        
+                        <div class="mb-0">
+                            <label class="form-label">Vision Statement</label>
+                            <div class="view-mode-only text-muted-custom small lh-base" id="view-vision">
+                                <%= ngoProfile?.visionStatement || 'No vision statement added.' %>
+                            </div>
+                            <textarea class="form-control edit-mode-only" id="edit-vision" rows="2"><%= ngoProfile?.visionStatement || '' %></textarea>
+                        </div>
+                    </div>
+        
+                    <!-- Areas of Operation -->
+                    <div class="card-custom">
+                        <h5 class="section-title">Areas of Operation</h5>
+                        <span class="section-subtitle">Fields and sectors your NGO operates in</span>
+        
+                        <div class="d-flex flex-wrap" id="areas-tags">
+                            <% (ngoProfile?.areasOfOperation || []).forEach(area => { %>
+                                <div class="tag-badge">
+                                    <span class="area-text"><%= area %></span>
+                                </div>
+                            <% }) %>
+                            <% if (!ngoProfile || !ngoProfile.areasOfOperation || ngoProfile.areasOfOperation.length === 0) { %>
+                                <span class="text-muted-custom small">No areas added yet.</span>
+                            <% } %>
+                        </div>
+        
+                        <div class="mt-3 edit-mode-only">
+                            <label class="form-label">Areas (comma separated)</label>
+                            <input type="text" class="form-control" id="edit-areas"
+                                   value="<%= (ngoProfile?.areasOfOperation || []).join(', ') %>">
+                        </div>
+                    </div>
+        
+                    <!-- Bank Details -->
+                    <div class="card-custom">
+                        <h5 class="section-title">Bank Details</h5>
+                        <span class="section-subtitle">Banking information for donations</span>
+        
+                        <div class="d-flex align-items-center justify-content-between p-3 mb-3"
+                            style="background-color: var(--input-bg); border-radius: 0.5rem;">
+                            <div>
+                                <div class="fw-medium text-white" style="font-size: 0.85rem;">Show bank details publicly</div>
+                                <div class="text-muted small">Allow donors to see your banking information</div>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox"
+                                       id="edit-bank-visible"
+                                       <%= ngoProfile?.bankDetails?.isVisible ? 'checked' : '' %>>
+                            </div>
+                        </div>
+        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Account Number</label>
+                                <div class="view-mode-only fw-medium" id="view-account-number">
+                                    <%= ngoProfile?.bankDetails?.accountNumber || '—' %>
+                                </div>
+                                <input type="text" class="form-control edit-mode-only" id="edit-account-number"
+                                       value="<%= ngoProfile?.bankDetails?.accountNumber || '' %>">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">IFSC Code</label>
+                                <div class="view-mode-only fw-medium" id="view-ifsc">
+                                    <%= ngoProfile?.bankDetails?.ifscCode || '—' %>
+                                </div>
+                                <input type="text" class="form-control edit-mode-only" id="edit-ifsc"
+                                       value="<%= ngoProfile?.bankDetails?.ifscCode || '' %>">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">UPI ID</label>
+                                <div class="view-mode-only fw-medium" id="view-upi">
+                                    <%= ngoProfile?.bankDetails?.upiId || '—' %>
+                                </div>
+                                <input type="text" class="form-control edit-mode-only" id="edit-upi"
+                                       value="<%= ngoProfile?.bankDetails?.upiId || '' %>">
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Verification Documents -->
+                    <div class="card-custom">
+                        <h5 class="section-title">Verification Documents</h5>
+                        <span class="section-subtitle">Upload and manage organization documents</span>
+        
+                        <label class="upload-zone edit-mode-only">
+                            <div class="mb-2"><i class="fa-solid fa-upload fa-2x"></i></div>
+                            <div class="small">Upload registration certificate, tax documents, etc.</div>
+                            <span class="btn btn-sm btn-outline-light mt-3">Choose Files</span>
+                            <input type="file" id="documents" name="documents" multiple style="display:none;">
+                        </label>
+        
+                        <label class="form-label mt-2">Uploaded Documents</label>
+                        <% (ngoProfile?.documents || []).forEach(doc => { %>
+                            <div class="file-item justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <i class="fa-regular fa-file-pdf text-muted me-3"></i>
+                                    <span class="small text-white"><%= doc.split('/').pop() %></span>
+                                </div>
+                            </div>
+                        <% }) %>
+                        
+                        <% if (!ngoProfile || !ngoProfile.documents || ngoProfile.documents.length === 0) { %>
+                            <p class="text-muted-custom small">No documents uploaded yet.</p>
+                        <% } %>
+                    </div>
+        
+                </div>
+        
+                <!-- Right Column: Sidebar -->
+                <div class="col-lg-4">
+        
+                    <!-- Statistics -->
+                    <div class="card-custom">
+                        <h5 class="section-title">Statistics</h5>
+                        <span class="section-subtitle">Your organization's impact</span>
+        
+                        <div class="stat-box">
+                            <div class="stat-label mb-1">Volunteers</div>
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-users text-muted me-2"></i>
+                                <div class="stat-value"><%= ngoProfile?.volunteers?.length || 0 %></div>
+                            </div>
+                        </div>
+        
+                        <div class="stat-box">
+                            <div class="stat-label mb-1">Donations Handled</div>
+                            <div class="d-flex align-items-center">
+                                <i class="fa-regular fa-heart text-muted me-2"></i>
+                                <div class="stat-value"><%= ngoProfile?.donationsHandled?.length || 0 %></div>
+                            </div>
+                        </div>
+        
+                        <div class="stat-box mb-0">
+                            <div class="stat-label mb-1">Member Since</div>
+                            <div class="d-flex align-items-center">
+                                <i class="fa-regular fa-calendar text-muted me-2"></i>
+                                <div class="stat-value fs-6">
+                                    <%= user.createdAt ? user.createdAt.toDateString() : '' %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Account Settings -->
+                    <div class="card-custom">
+                        <h5 class="section-title">Account Settings</h5>
+                        <span class="section-subtitle">Preferences and security</span>
+        
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <div class="small text-white fw-medium">Notifications</div>
+                                <div class="small text-muted" style="font-size: 0.75rem;">Receive email notifications</div>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox"
+                                       id="notificationsToggler"
+                                       <%= ngoProfile && ngoProfile.notificationsEnabled ? 'checked' : '' %>>
+                            </div>
+                        </div>
+        
+                        <button class="btn btn-dark-block">Change Password</button>
+                        <button class="btn btn-dark-block">Privacy Settings</button>
+        
+                        <button class="btn btn-danger-custom">Delete Account</button>
+                    </div>
+        
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const body = document.body;
+        const btnEditProfile = document.getElementById('btnEditProfile');
+        const btnSave = document.getElementById('btnSave');
+        const btnCancel = document.getElementById('btnCancel');
+
+        const profileImageInput = document.getElementById('profileImage');
+        const bannerImageInput = document.getElementById('bannerImage');
+        const documentsInput = document.getElementById('documents');
+
+        const viewEditPairs = [
+            ['view-org-name', 'edit-org-name'],
+            ['view-org-name-main', 'edit-org-name-main'],
+            ['view-registration-number', 'edit-registration-number'],
+            ['view-registered-under', 'edit-registered-under'],
+            ['view-website', 'edit-website'],
+            ['view-email', 'edit-email'],
+            ['view-contact', 'edit-contact'],
+            ['view-address', 'edit-address'],
+            ['view-city', 'edit-city'],
+            ['view-state', 'edit-state'],
+            ['view-pincode', 'edit-pincode'],
+            ['view-about', 'edit-about'],
+            ['view-mission', 'edit-mission'],
+            ['view-vision', 'edit-vision'],
+            ['view-account-number', 'edit-account-number'],
+            ['view-ifsc', 'edit-ifsc'],
+            ['view-upi', 'edit-upi']
+        ];
+
+        // EDIT MODE
+        btnEditProfile.addEventListener('click', function () {
+            body.classList.add('editing');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // CANCEL
+        btnCancel.addEventListener('click', function () {
+            body.classList.remove('editing');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // SAVE
+        btnSave.addEventListener('click', function () {
+            const formData = new FormData();
+
+            // User data
+            formData.append('user[email]', document.getElementById('edit-email').value.trim());
+            formData.append('user[contact]', document.getElementById('edit-contact').value.trim());
+
+            // NGO profile
+            formData.append('ngoProfile[organizationName]', document.getElementById('edit-org-name-main').value.trim());
+            formData.append('ngoProfile[registrationNumber]', document.getElementById('edit-registration-number').value.trim());
+            formData.append('ngoProfile[registeredUnder]', document.getElementById('edit-registered-under').value.trim());
+            formData.append('ngoProfile[website]', document.getElementById('edit-website').value.trim());
+            formData.append('ngoProfile[address]', document.getElementById('edit-address').value.trim());
+            formData.append('ngoProfile[city]', document.getElementById('edit-city').value.trim());
+            formData.append('ngoProfile[state]', document.getElementById('edit-state').value.trim());
+            formData.append('ngoProfile[pincode]', document.getElementById('edit-pincode').value.trim());
+            formData.append('ngoProfile[about]', document.getElementById('edit-about').value.trim());
+            formData.append('ngoProfile[missionStatement]', document.getElementById('edit-mission').value.trim());
+            formData.append('ngoProfile[visionStatement]', document.getElementById('edit-vision').value.trim());
+            formData.append('ngoProfile[areasOfOperation]', document.getElementById('edit-areas').value.trim());
+            formData.append('ngoProfile[bankDetails][accountNumber]', document.getElementById('edit-account-number').value.trim());
+            formData.append('ngoProfile[bankDetails][ifscCode]', document.getElementById('edit-ifsc').value.trim());
+            formData.append('ngoProfile[bankDetails][upiId]', document.getElementById('edit-upi').value.trim());
+            formData.append('ngoProfile[bankDetails][isVisible]', document.getElementById('edit-bank-visible').checked ? 'on' : '');
+
+            if (profileImageInput && profileImageInput.files[0]) {
+                formData.append('profileImage', profileImageInput.files[0]);
+            }
+            if (bannerImageInput && bannerImageInput.files[0]) {
+                formData.append('bannerImage', bannerImageInput.files[0]);
+            }
+            if (documentsInput && documentsInput.files.length > 0) {
+                Array.from(documentsInput.files).forEach(file => {
+                    formData.append('documents', file);
+                });
+            }
+
+            btnSave.disabled = true;
+            btnSave.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i>Saving...';
+
+            fetch('/ngo/account', {
+                method: 'PUT',
+                body: formData
+            })
+                .then(res => {
+                    if (!res.ok) {
+                        showAlert && showAlert('danger', 'Failed to update NGO profile.');
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (!data.success) {
+                        showAlert && showAlert('danger', data.message || 'Failed to update NGO profile.');
+                        return;
+                    }
+
+                    showAlert && showAlert('success', 'NGO profile updated successfully.');
+
+                    // Update view text
+                    viewEditPairs.forEach(([viewId, editId]) => {
+                        const viewEl = document.getElementById(viewId);
+                        const editEl = document.getElementById(editId);
+                        if (viewEl && editEl) {
+                            const icon = viewEl.querySelector('i');
+                            const newText = editEl.value.trim() || '—';
+                            if (icon) {
+                                viewEl.innerHTML = '';
+                                viewEl.appendChild(icon);
+                                viewEl.appendChild(document.createTextNode(' ' + newText));
+                            } else {
+                                viewEl.textContent = newText;
+                            }
+                        }
+                    });
+
+                    // Update areas tags
+                    const areasText = document.getElementById('edit-areas').value.trim();
+                    const areasTags = document.getElementById('areas-tags');
+                    if (areasTags) {
+                        areasTags.innerHTML = '';
+                        if (areasText) {
+                            areasText.split(',').map(a => a.trim()).filter(a => a).forEach(area => {
+                                const div = document.createElement('div');
+                                div.className = 'tag-badge';
+                                div.innerHTML = `<span class="area-text">${area}</span>`;
+                                areasTags.appendChild(div);
+                            });
+                        } else {
+                            const p = document.createElement('span');
+                            p.className = 'text-muted-custom small';
+                            p.textContent = 'No areas added yet.';
+                            areasTags.appendChild(p);
+                        }
+                    }
+
+                    body.classList.remove('editing');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                })
+                .catch(err => {
+                    console.error(err);
+                    showAlert && showAlert('danger', 'An error occurred while updating NGO profile.');
+                })
+                .finally(() => {
+                    btnSave.disabled = false;
+                    btnSave.innerHTML = '<i class="fa-regular fa-floppy-disk me-2"></i>Save Changes';
+                    if (profileImageInput) profileImageInput.value = '';
+                    if (bannerImageInput) bannerImageInput.value = '';
+                    if (documentsInput) documentsInput.value = '';
+                });
+        });
+    });
+</script>
+
+<%- include('../partials/footer') %>

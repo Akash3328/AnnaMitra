@@ -1,0 +1,110 @@
+<div class="sidebar">
+    <div class="sidebar-main open">
+        <div class="sidebar-content pt-3">
+            <div class="sidebar-header d-flex align-items-center border-bottom border-secondary pb-3">
+                <div class="fs-4" id="toggle-btn" style="cursor: pointer;">
+                    <i class="bi bi-list px-1 mx-3"></i>
+                </div>
+                <div>
+                    <h3 class="fs-4 mb-2" style="color: var(--am-darktheme-font);">AnnaMitra</h3>
+                    <p class="mb-2" style="font-size: 0.9rem;"><%= user.role %> Panel</p>
+                </div>
+            </div>
+        <div class="sidebar-body pt-3">
+
+                <% if(user.role == 'Volunteer') { %>
+
+                        <a href="/volunteer/" class="d-flex align-items-center mb-1 <%= activePage === 'volunteer-dashboard' ? 'active' : '' %>"><i 
+                                        class="bi bi-bar-chart-fill fs-5 px-1 mx-3"></i>Dashboard</a>
+                        <a href="/volunteer/assigned-tasks" class="d-flex align-items-center mb-1 <%= activePage === 'volunteer-assigned-tasks' ? 'active' : '' %>"><i 
+                                        class="bi bi-journal-text fs-5 px-1 mx-3"></i>My Assignments</a>
+                        <a href="/volunteer/donation-history" class="d-flex align-items-center mb-1 <%= activePage === 'volunteer-donation-history' ? 'active' : '' %>"><i 
+                                        class="bi bi-clock-history fs-5 px-1 mx-3"></i>Donations History</a>
+                        <a href="/volunteer/notifications" class="d-flex align-items-center mb-1 <%= activePage === 'volunteer-notifications' ? 'active' : '' %>"><i 
+                                        class="bi bi-bell-fill fs-5 px-1 mx-3"></i>Notifications</a>
+                        <a href="/volunteer/ngos" class="d-flex align-items-center mb-1 <%= activePage === 'volunteer-ngos' ? 'active' : '' %>"><i 
+                                        class="bi bi-people-fill fs-5 px-1 mx-3"></i>NGOs</a>
+                        <a href="/volunteer/joined-ngos" class="d-flex align-items-center mb-1 <%= activePage === 'volunteer-joined-ngos' ? 'active' : '' %>"><i 
+                                class="bi bi-people-fill fs-5 px-1 mx-3"></i>Joined NGOs</a>
+                        <a href="/volunteer/account" class="d-flex align-items-center mb-1 <%= activePage === 'volunteer-account' ? 'active' : '' %>"><i 
+                                        class="bi bi-person-gear fs-5 px-1 mx-3"></i>Manage Account</a>
+                
+                <% } else if(user.role == 'NGO') { %>
+
+                        <a href="/ngo/" class="d-flex align-items-center mb-1 <%= activePage === 'ngo-dashboard' ? 'active' : '' %>"><i
+                                        class="bi bi-bar-chart-fill fs-5 px-1 mx-3"></i>Dashboard</a>
+                        <a href="/ngo/my-donations" class="d-flex align-items-center mb-1 <%= activePage === 'ngo-my-donations' ? 'active' : '' %>"><i
+                                        class="bi bi-box-seam-fill fs-5 px-1 mx-3"></i>My Donations</a>
+                        <a href="/ngo/staff" class="d-flex align-items-center mb-1 <%= activePage === 'ngo-staff' ? 'active' : '' %>"><i
+                                        class="bi bi-people-fill fs-5 px-1 mx-3"></i>Staff</a>
+                        <a href="/ngo/joining-requests" class="d-flex align-items-center mb-1 <%= activePage === 'ngo-joining-requests' ? 'active' : '' %>"><i
+                                        class="bi bi-plus-lg fs-5 px-1 mx-3"></i>Requests</a>
+                        <a href="/ngo/notifications" class="d-flex align-items-center mb-1 <%= activePage === 'ngo-notifications' ? 'active' : '' %>"><i
+                                        class="bi bi-bell-fill fs-5 px-1 mx-3"></i>Notifications</a>
+                        <a href="/ngo/account" class="d-flex align-items-center mb-1 <%= activePage === 'ngo-account' ? 'active' : '' %>"><i
+                                        class="bi bi-person-gear fs-5 px-1 mx-3"></i>Manage Account</a>
+
+                <% } else if(user.role == 'Admin') { %>
+
+                        <a href="/admin/" class="d-flex align-items-center mb-1 active <%= activePage === 'dashboard' ? 'active' : '' %>"><i
+                                        class="bi bi-bar-chart-fill fs-5 px-1 mx-3"></i>Dashboard</a>
+                        <a href="/admin/donations" class="d-flex align-items-center mb-1 <%= activePage === 'donations' ? 'active' : '' %>"><i
+                                        class="bi bi-box-seam-fill fs-5 px-1 mx-3"></i>Donations</a>
+                        <a href="/admin/inquiries" class="d-flex align-items-center mb-1 <%= activePage === 'inquiries' ? 'active' : '' %>"><i
+                                        class="bi bi-envelope-arrow-down-fill fs-5 px-1 mx-3"></i>Inquiries</a>
+                        <a href="/admin/donors" class="d-flex align-items-center mb-1 <%= activePage === 'donors' ? 'active' : '' %>"><i
+                                        class="fas fa-hand-holding-heart fs-5 px-1 mx-3"></i>Donors</a>
+                        <a href="/admin/ngos" class="d-flex align-items-center mb-1 <%= activePage === 'ngos' ? 'active' : '' %>"><i
+                                        class="bi bi-people-fill fs-5 px-1 mx-3"></i>NGOs</a>
+                        <a href="/admin/volunteers" class="d-flex align-items-center mb-1 <%= activePage === 'volunteers' ? 'active' : '' %>"><i
+                                        class="bi bi-person-fill fs-5 px-1 mx-3"></i>Volunteers</a>
+                        <a href="/admin/admins" class="d-flex align-items-center mb-1 <%= activePage === 'admins' ? 'active' : '' %>"><i
+                                        class="bi bi-person-circle fs-5 px-1 mx-3"></i>Admins</a>
+                        <a href="/admin/account" class="d-flex align-items-center mb-1 <%= activePage === 'account' ? 'active' : '' %>"><i
+                                        class="bi bi-person-gear fs-5 px-1 mx-3"></i>Manage Account</a>
+
+                <% } %>
+                
+
+                <a class="d-flex align-items-center mb-1" style="cursor: pointer;" onclick="logoutUser()"><i
+                                class="fas fa-sign-out-alt fs-5 px-1 mx-3"></i>Log Out</a>
+        </div>
+        </div>
+        <div class="sidebar-backdrop"></div>
+    </div>
+</div>
+
+
+
+<script>
+    const toggleButton = document.getElementById('toggle-btn');
+    const sidebar = document.getElementsByClassName('sidebar-main')[0];
+    const backdrop = document.getElementsByClassName('sidebar-backdrop')[0];
+
+    toggleButton.addEventListener('click', function () {
+        sidebar.classList.toggle('open')
+        toggleButton.classList.toggle('rotate')
+    });
+    document.getElementsByClassName('navbar-toggler')[0].addEventListener('click', function () {
+        sidebar.classList.toggle('open')
+        toggleButton.classList.toggle('rotate')
+    });
+    backdrop.addEventListener('click', function () {
+        sidebar.classList.toggle('open');
+    })
+
+    // function toggleSubMenu(button) {
+
+    //     if (!button.nextElementSibling.classList.contains('show')) {
+    //         closeAllSubMenus()
+    //     }
+
+    //     button.nextElementSibling.classList.toggle('show')
+    //     button.classList.toggle('rotate')
+
+    //     if (sidebar.classList.contains('close')) {
+    //         sidebar.classList.toggle('close')
+    //         toggleButton.classList.toggle('rotate')
+    //     }
+    // }
+</script>

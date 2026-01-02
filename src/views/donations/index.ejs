@@ -1,0 +1,414 @@
+
+<% if(messageType === 'danger') { %>
+
+    <%- include('../404') %>
+
+<% } else { %>
+
+    <%- include('../partials/header') %>
+
+    <%- include('../partials/navbar') %>
+
+    <!-- main container -->
+    <div class="container mb-4 pt-4">
+        <!-- filters row section -->
+        <div class="card shadow-sm border-0 mb-4 filters-card">
+            <!-- Filters Row -->
+            <div class="card-body p-4">
+                <div class="d-flex flex-wrap gap-2 align-items-center">
+                    <div class="flex-grow-1">
+                        <div class="d-flex">
+                            <div class="border rounded d-flex align-items-center pe-2 w-100" style="padding: 0.375rem 0;">
+                                <i class="fas fa-search text-secondary" style="margin: 0 0.75rem;"></i>
+                                <input type="text" id="searchTitleDesc" class="w-100 p-0" placeholder="Search donations..."
+                                    style="border: none; outline: none; color: var(--bs-body-color);">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <!-- More Filters Button -->
+                        <button class="btn btn-hover-secondary-subtle border w-100 align-middle" type="button"
+                            data-bs-toggle="offcanvas" data-bs-target="#filtersOffcanvas" aria-controls="filtersOffcanvas">
+                            <i class="fas fa-sliders-h text-secondary me-1"></i> More Filters
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Active Filters Badges -->
+                <div class="d-flex mt-3 align-items-center">
+                    <span class="text-secondary" style="width: fit-content;">Active filters:</span>
+                    <div id="activeFiltersContainer" class="d-flex flex-wrap"></div>
+                    <span class="clear-all text-primary ms-2" style="cursor: pointer;">Clear All</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- display donation cards -->
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <div class="row justify-content-between align-items-center mb-3">
+                    <h3 class="h4 fw-semibold col-md-9">Available Donations(<%= donations.length %> found)</h3>
+                    <div class="d-flex align-items-center col-md-3">
+                        <div class="text-secondary me-2" style="white-space: nowrap;">Sort by:</div>
+                        <select class="form-select">
+                            <option selected disabled>Select option</option>
+                            <option value="items">Number of food items</option>
+                            <option value="quantityk">Quantity in Kg</option>
+                            <option value="quantityl">Quantity in Ltr</option>
+                            <option value="minp">Minimum number of people fed</option>
+                            <option value="maxp">Maximum number of people fed</option>
+                            <option value="cookasc">Cook date: Ascending</option>
+                            <option value="cookdes">Cook date: Descending</option>
+                            <option value="cookasc">Expiry date: Ascending</option>
+                            <option value="cookdes">Expiry date: Descending</option>
+                            <option value="donorrating">Donor ratings</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row g-4">
+                    <% donations.forEach(donation=> { %>
+                        <div class="col-lg-3 col-6">
+                            <div class="card h-100 shadow-sm border-0">
+                                <img src="<%= donation.images && donation.images.length ? donation.images[0] : 'https://via.placeholder.com/300x200?text=No+Image' %>"
+                                    class="card-img-top" alt="<%= donation.title %>">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h5 class="card-title fw-semibold text-truncate-1 mb-0">
+                                            <%= donation.title %>
+                                        </h5>
+                                        <span class="badge-status badge-<%= donation.status.toLowerCase() %>">
+                                            <%= donation.status %>
+                                        </span>
+                                    </div>
+                                    <p class="text-muted mb-3">
+                                        <%= donation.source %>
+                                    </p>
+                                    <ul class="list-unstyled mb-4">
+                                        <li class="d-flex align-items-center mb-2">
+                                            <i class="bi bi-geo-alt text-secondary me-2"></i>
+                                            <span class="text-truncate-1">
+                                                <%= donation.address %>
+                                            </span>
+                                        </li>
+                                        <li class="d-flex align-items-center mb-2">
+                                            <i class="bi bi-telephone text-secondary me-2"></i>
+                                            <span>
+                                                +91 <%= donation.contact %>
+                                            </span>
+                                        </li>
+                                        <li class="d-flex align-items-center mb-2">
+                                            <i class="bi bi-box-seam text-secondary me-2"></i>
+                                            <span>
+                                                <%= donation.items.length %> items
+                                            </span>
+                                        </li>
+                                        <li class="d-flex align-items-center">
+                                            <i class="bi bi-calendar-event text-secondary me-2"></i>
+                                            <span>Expires: <%= new Date(donation.items[0]?.expiryDate ||
+                                                    donation.createdAt).toLocaleDateString('en-GB') %></span>
+                                        </li>
+                                    </ul>
+                                    <div class="d-flex gap-2 mt-auto">
+                                        <a href="/donations/<%= donation._id %>" class="btn btn-view flex-fill">View</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
+                </div>
+        </div>
+    </div>
+
+    <!-- More Filters Sidebar -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="filtersOffcanvas" aria-labelledby="filtersOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="filtersOffcanvasLabel">Advance filters</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+
+            <!-- Food Type -->
+            <div class="mb-4">
+                <label class="form-label"><strong>Food Type</strong></label>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Cooked Food" id="food1"
+                        data-filter-type="foodType">
+                    <label class="form-check-label" for="food1">Cooked Food</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Raw Food" id="food2" data-filter-type="foodType">
+                    <label class="form-check-label" for="food2">Raw Food</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Packaged Food" id="food3"
+                        data-filter-type="foodType">
+                    <label class="form-check-label" for="food3">Packaged Food</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Fruits & Vegetables" id="food4"
+                        data-filter-type="foodType">
+                    <label class="form-check-label" for="food4">Fruits & Vegetables</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Spices & Condiments" id="food5"
+                        data-filter-type="foodType">
+                    <label class="form-check-label" for="food5">Spices & Condiments</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Canned or Tinned Food" id="food6"
+                        data-filter-type="foodType">
+                    <label class="form-check-label" for="food6">Canned or Tinned Food</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Bakery Products" id="food7"
+                        data-filter-type="foodType">
+                    <label class="form-check-label" for="food7">Bakery Products</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Dairy Products" id="food8"
+                        data-filter-type="foodType">
+                    <label class="form-check-label" for="food8">Dairy Products</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Beverages" id="food9"
+                        data-filter-type="foodType">
+                    <label class="form-check-label" for="food9">Beverages</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Nutritional Supplements" id="food10"
+                        data-filter-type="foodType">
+                    <label class="form-check-label" for="food10">Nutritional Supplements</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Other" id="food11" data-filter-type="foodType">
+                    <label class="form-check-label" for="food11">Other</label>
+                </div>
+            </div>
+
+
+            <!-- Food Condition -->
+            <div class="mb-4">
+                <label class="form-label"><strong>Food Condition</strong></label>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Fresh" id="conditionFresh"
+                        data-filter-type="foodCondition">
+                    <label class="form-check-label" for="conditionFresh">Fresh</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Leftover" id="conditionLeftover"
+                        data-filter-type="foodCondition">
+                    <label class="form-check-label" for="conditionLeftover">Leftover</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Near Expiry" id="conditionNearExpiry"
+                        data-filter-type="foodCondition">
+                    <label class="form-check-label" for="conditionNearExpiry">Near Expiry</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Preserved" id="conditionPreserved"
+                        data-filter-type="foodCondition">
+                    <label class="form-check-label" for="conditionPreserved">Preserved</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Slightly Used" id="conditionSlightlyUsed"
+                        data-filter-type="foodCondition">
+                    <label class="form-check-label" for="conditionSlightlyUsed">Slightly Used</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Other" id="conditionOther"
+                        data-filter-type="foodCondition">
+                    <label class="form-check-label" for="conditionOther">Other</label>
+                </div>
+            </div>
+
+
+            <!-- Food Source -->
+            <div class="mb-4">
+                <label class="form-label"><strong>Food Source</strong></label>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Restaurant" id="source1"
+                        data-filter-type="source">
+                    <label class="form-check-label" for="source1">Restaurant</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Event" id="source2" data-filter-type="source">
+                    <label class="form-check-label" for="source2">Event</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Home" id="source3" data-filter-type="source">
+                    <label class="form-check-label" for="source3">Home</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Caterer" id="source4" data-filter-type="source">
+                    <label class="form-check-label" for="source4">Caterer</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Supermarket" id="source5"
+                        data-filter-type="source">
+                    <label class="form-check-label" for="source5">Supermarket</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Bakery" id="source6" data-filter-type="source">
+                    <label class="form-check-label" for="source6">Bakery</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Corporate" id="source7"
+                        data-filter-type="source">
+                    <label class="form-check-label" for="source7">Corporate</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Religious Place" id="source8"
+                        data-filter-type="source">
+                    <label class="form-check-label" for="source8">Religious Place</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Hostel" id="source9" data-filter-type="source">
+                    <label class="form-check-label" for="source9">Hostel</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Canteen" id="source10" data-filter-type="source">
+                    <label class="form-check-label" for="source10">Canteen</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="NGO" id="source11" data-filter-type="source">
+                    <label class="form-check-label" for="source11">NGO</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Other" id="source12" data-filter-type="source">
+                    <label class="form-check-label" for="source12">Other</label>
+                </div>
+            </div>
+
+
+            <!-- Expiry Date -->
+            <div class="mb-4">
+                <label class="form-label"><strong>Last Expiry Date</strong></label>
+                <input type="date" class="form-control" id="expiryDate" data-filter-type="expiryDate"
+                    placeholder="Select Expiry Date">
+            </div>
+
+            <!-- Cooked Date -->
+            <div class="mb-4">
+                <label class="form-label"><strong>Last Cooked Date</strong></label>
+                <input type="date" class="form-control" id="cookedDate" data-filter-type="cookedDate"
+                    placeholder="Select Cooked Date">
+            </div>
+
+            <!-- Number of People Fed -->
+            <div class="mb-4">
+                <label class="form-label"><strong>Number of People Fed</strong></label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label"><strong>Minimum</strong></label>
+                        <input type="number" class="form-control" id="minPeopleFed" data-filter-type="minPeopleFed"
+                            placeholder="Min People Fed">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label"><strong>Maximum</strong></label>
+                        <input type="number" class="form-control" id="maxPeopleFed" data-filter-type="maxPeopleFed"
+                            placeholder="Max People Fed">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Specific Donors -->
+            <div class="mb-4">
+                <label class="form-label"><strong>Select specific donors</strong></label>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Hunger Restaurant" id="donor1"
+                        data-filter-type="donor">
+                    <label class="form-check-label" for="donor1">Hunger Restaurant</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="Hanumant Restaurant" id="donor2"
+                        data-filter-type="donor">
+                    <label class="form-check-label" for="donor2">Hanumant Restaurant</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="TrueNation Restaurant" id="donor3"
+                        data-filter-type="donor">
+                    <label class="form-check-label" for="donor3">TrueNation Restaurant</label>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label"><strong>Search for Donors:</strong></label>
+                    <input type="text" class="form-control" id="searchDonor" data-filter-type="searchDonor"
+                        placeholder="Donor name">
+                </div>
+            </div>
+
+            <!-- State -->
+            <div class="mb-4">
+                <label class="form-label"><strong>State</strong></label>
+                <select class="form-select" id="stateFilter" data-filter-type="state">
+                    <option value="" selected disabled>Select State</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Chhattisgarh">Chhattisgarh</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Haryana">Haryana</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Jharkhand">Jharkhand</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Manipur">Manipur</option>
+                    <option value="Meghalaya">Meghalaya</option>
+                    <option value="Mizoram">Mizoram</option>
+                    <option value="Nagaland">Nagaland</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Sikkim">Sikkim</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Tripura">Tripura</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="West Bengal">West Bengal</option>
+                    <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                    <option value="Chandigarh">Chandigarh</option>
+                    <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu
+                    </option>
+                    <option value="Lakshadweep">Lakshadweep</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Puducherry">Puducherry</option>
+                    <option value="Ladakh">Ladakh</option>
+                </select>
+            </div>
+
+            <!-- City -->
+            <div class="mb-4">
+                <label class="form-label"><strong>City</strong></label>
+                <select class="form-select" id="cityFilter" data-filter-type="city">
+                    <option value="" selected disabled>Select City</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Bangalore">Bangalore</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Kolkata">Kolkata</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Ahmedabad">Ahmedabad</option>
+                    <option value="Pune">Pune</option>
+                    <option value="Jaipur">Jaipur</option>
+                    <option value="Lucknow">Lucknow</option>
+                </select>
+            </div>
+
+            <!-- Pincode -->
+            <div class="mb-4">
+                <label class="form-label"><strong>Pincode</strong></label>
+                <input type="text" class="form-control" id="pincodeFilter" data-filter-type="pincode"
+                    placeholder="Enter Pincode">
+            </div>
+
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>
+
+<% } %>

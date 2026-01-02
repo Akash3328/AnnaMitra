@@ -1,0 +1,425 @@
+<!-- Donation form -->
+<div class="flex-grow-1 donate-container">
+    <div class="py-5 container">
+        <div class="justify-content-center row">
+            <div class="col-xl-10 col-lg-11 col-12">
+                <div class="card donate-card shadow-sm">
+                    <div class="card-header donate-card-header">
+                        <div class="donate-card-header-bg">
+                        </div>
+                        <div class="position-relative">
+                            <h2 class="text-center mb-3 text-white donate-title">
+                                Donate Food</h2>
+                            <p class="text-center text-white mb-0 donate-subtitle">Your
+                                contribution can make someone's day brighter</p>
+                        </div>
+                    </div>
+                    <div class="p-3 card-body donate-card-body">
+                        <form class="donate-form" id="donation-form" method="POST">
+                            <div class="my-4 row">
+                                <label class="form-label h4 text-center col-12">Food details:</label>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label donate-label">Food Title</label>
+                                <input placeholder="Your food title" type="text" class="form-control donate-input"
+                                    name="title">
+                                <div class="error-message text-danger small mt-1"></div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="foodSource" class="form-label donate-label">Food Source</label>
+                                <select name="foodSource" id="foodSource" class="form-select donate-select">
+                                    <option value="" disabled selected>Select the food source</option>
+                                    <option value="Restaurant">Restaurant</option>
+                                    <option value="Event">Event</option>
+                                    <option value="Home">Home</option>
+                                    <option value="Caterer">Caterer</option>
+                                    <option value="Supermarket">Supermarket</option>
+                                    <option value="Bakery">Bakery</option>
+                                    <option value="Corporate">Corporate</option>
+                                    <option value="Religious Place">Religious Place</option>
+                                    <option value="Hostel">Hostel</option>
+                                    <option value="Canteen">Canteen</option>
+                                    <option value="NGO">NGO</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <div class="error-message text-danger small mt-1"></div>
+                            </div>
+
+                            <div class="mb-4">
+                                <lable class="form-label donate-label">Food Items</lable>
+                                <input type="hidden" name="foodItems">
+                                <div class="donate-input border-top border-end border-bottom">
+                                    <div class="table-responsive">
+                                        <table
+                                            class="table align-middle table-bordered border rounded-3 overflow-hidden shadow-sm mb-1 tr-hover"
+                                            id="itemsTable" style="white-space: nowrap;">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                    <th>Type</th>
+                                                    <th>Quantity</th>
+                                                    <th>Cooked Date & Time</th>
+                                                    <th>Expiry Date & Time</th>
+                                                    <th>Images</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="8" class="text-center">No food items available
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+                                <td>1</td>
+                                <td>Rice</td>
+                                <td>Grain</td>
+                                <td>10 kg</td>
+                                <td>2025-06-05 14:20</td>
+                                <td>2025-07-05 14:20</td>
+                                <td>
+                                    <div class="border rounded p-1" style="max-width: 100px;">
+                                        <img src="/images/food-3.jpg" alt="food item" class="img-fluid">
+                                        <div class="text-center hover-blue" data-bs-toggle="modal" data-bs-target="#images-modal">View all</div>
+                                    </div>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <button type="button" class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Milk</td>
+                                <td>Dairy</td>
+                                <td>5 ltr</td>
+                                <td>2025-06-05 09:00</td>
+                                <td>2025-06-07 09:00</td>
+                                <td>
+                                    <div class="border rounded p-1" style="max-width: 100px;">
+                                        <img src="/images/food-3.jpg" alt="food item" class="img-fluid">
+                                        <div class="text-center hover-blue" data-bs-toggle="modal" data-bs-target="#images-modal">View all</div>
+                                    </div>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <button type="button" class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Apples</td>
+                                <td>Fruit</td>
+                                <td>8 kg</td>
+                                <td>2025-06-05 12:15</td>
+                                <td>2025-06-12 12:15</td>
+                                <td>
+                                    <div class="border rounded p-1" style="max-width: 100px;">
+                                        <img src="/images/food-3.jpg" alt="food item" class="img-fluid">
+                                        <div class="text-center hover-blue" data-bs-toggle="modal" data-bs-target="#images-modal">View all</div>
+                                    </div>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <button type="button" class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Cooked Dal</td>
+                                <td>Prepared Meal</td>
+                                <td>4 kg</td>
+                                <td>2025-06-05 13:30</td>
+                                <td>2025-06-05 20:00</td>
+                                <td>
+                                    <div class="border rounded p-1" style="max-width: 100px;">
+                                        <img src="/images/food-3.jpg" alt="food item" class="img-fluid">
+                                        <div class="text-center hover-blue" data-bs-toggle="modal" data-bs-target="#images-modal">View all</div>
+                                    </div>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <button type="button" class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Orange Juice</td>
+                                <td>Beverage</td>
+                                <td>3 ltr</td>
+                                <td>2025-06-05 10:45</td>
+                                <td>2025-06-08 10:45</td>
+                                <td>
+                                    <div class="border rounded p-1" style="max-width: 100px;">
+                                        <img src="/images/food-3.jpg" alt="food item" class="img-fluid">
+                                        <div class="text-center hover-blue" data-bs-toggle="modal" data-bs-target="#images-modal">View all</div>
+                                    </div>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <button type="button" class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr> -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <button type="button" class="btn btn-outline-secondary donate-add-item-btn"
+                                            data-bs-toggle="modal" data-bs-target="#new-item-modal">
+                                            <i class="fas fa-plus me-2"></i>Add More Items
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="error-message text-danger small mt-1"></div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label donate-label">Estimated people can be fed</label>
+                                <input
+                                    placeholder="Enter estimated number of people that can be fed using your donation"
+                                    class="form-control donate-input" type="number" name="people-fed">
+                                <div class="error-message text-danger small mt-1"></div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label donate-label">Description</label>
+                                <textarea rows="3" placeholder="Additional details about the food" name="description"
+                                    class="form-control donate-input"></textarea>
+                                <div class="error-message text-danger small mt-1"></div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label donate-label">Food Image</label>
+                                <input accept="image/*" class="form-control donate-input" id="donationImages"
+                                    type="file" name="donation-images[]" multiple>
+                                <small class="text-muted form-text">Upload an image of the food you're
+                                    donating</small>
+                                <div class="mt-2"></div>
+                                <div class="error-message text-danger small mt-1"></div>
+                            </div>
+
+                            <div class="mb-4 mt-5 row">
+                                <label class="form-label h4 text-center col-12">Contact details:</label>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label donate-label">Pickup Address</label>
+                                <div class="d-flex">
+                                    <input placeholder="Enter address for pickup" class="form-control donate-input"
+                                        type="text" name="address">
+                                    <button type="button" id="currentLocation"
+                                        class="ms-2 btn btn-outline-secondary donate-address-btn"
+                                        title="My Current Location">
+                                        <i class="fas fa-crosshairs"></i>
+                                    </button>
+                                </div>
+                                <div class="error-message text-danger small mt-1"></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label donate-label">City</label>
+                                    <input placeholder="Your city" class="form-control donate-input" id="donationCity"
+                                        type="text" name="city">
+                                    <div class="error-message text-danger small mt-1"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label donate-label">State</label>
+                                    <input placeholder="Your state" class="form-control donate-input" type="text"
+                                        name="state">
+                                    <div class="error-message text-danger small mt-1"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <small class="text-muted mt-2 d-block">You can also click on the map to set your
+                                    address and coordinates</small>
+                                <div class="mt-2 donate-map-container">
+                                    <div>
+                                        <input type="hidden" name="donationLat">
+                                        <input type="hidden" name="donationLng">
+                                    </div>
+                                    <div class="donate-map-inner">
+                                        <div class="donate-map-bg"></div>
+                                        <div id="pickupMap"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label donate-label">Contact person name</label>
+                                <input placeholder="Enter person name" class="form-control donate-input" type="text"
+                                    name="person-name">
+                                <div class="error-message text-danger small mt-1"></div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label donate-label">Contact Number</label>
+                                <input placeholder="Your contact number" class="form-control donate-input" type="text"
+                                    name="contact">
+                                <div class="error-message text-danger small mt-1"></div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label donate-label">Email Address</label>
+                                <input placeholder="Your email address" class="form-control donate-input" type="text"
+                                    name="email">
+                                <div class="error-message text-danger small mt-1"></div>
+                            </div>
+
+                            <div class="d-grid gap-2 mt-5">
+                                <button type="submit" class="btn btn-primary donate-submit-btn">Submit
+                                    Donation</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for adding new food item -->
+<div class="modal fade" id="new-item-modal" tabindex="-1" aria-labelledby="newItemModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="newItemModal">Add new food item</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="justify-content-center">
+                        <div class="card">
+                            <div class="p-3 card-body">
+                                <form id="itemForm" class="donate-form">
+                                    <div class="mb-4">
+                                        <label class="form-label donate-label">Name</label>
+                                        <input placeholder="Your food title" type="text"
+                                            class="form-control donate-input" name="itemName">
+                                        <div class="error-message text-danger small mt-1"></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="mb-4 col-md-6">
+                                            <label class="form-label donate-label">Quantity</label>
+                                            <input placeholder="e.g., 5kg, 10 packets" class="form-control donate-input"
+                                                type="number" name="itemQuantity">
+                                            <div class="error-message text-danger small mt-1"></div>
+                                        </div>
+                                        <div class="mb-4 col-md-6">
+                                            <label class="form-label donate-label">Unit</label>
+                                            <select name="unit" class="form-select donate-select">
+                                                <option value="" disabled selected>Select Unit</option>
+                                                <option value="Kilograms">Kilograms</option>
+                                                <option value="Grams">Grams</option>
+                                                <option value="Liters">Liters</option>
+                                                <option value="Milliliters">Milliliters</option>
+                                                <option value="Pieces">Pieces</option>
+                                                <option value="Packets">Packets</option>
+                                                <option value="Boxes">Boxes</option>
+                                                <option value="Cans">Cans</option>
+                                                <option value="Bottles">Bottles</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                            <div class="error-message text-danger small mt-1"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label donate-label">Type</label>
+                                        <select name="itemType" class="form-select donate-select">
+                                            <option value="" disabled selected>Select Food Type</option>
+                                            <option value="Cooked Food">Cooked Food</option>
+                                            <option value="Raw Food">Raw Food</option>
+                                            <option value="Packaged Food">Packaged Food</option>
+                                            <option value="Fruits & Vegetables">Fruits & Vegetables</option>
+                                            <option value="Spices & Condiments">Spices & Condiments</option>
+                                            <option value="Canned or Tinned Food">Canned or Tinned Food</option>
+                                            <option value="Bakery Products">Bakery Products</option>
+                                            <option value="Dairy Products">Dairy Products</option>
+                                            <option value="Beverages">Beverages</option>
+                                            <option value="Nutritional Supplements">Nutritional Supplements
+                                            </option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                        <div class="error-message text-danger small mt-1"></div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label donate-label">Condition</label>
+                                        <select name="condition" class="form-select donate-select">
+                                            <option value="" disabled selected>Select Condition</option>
+                                            <option value="Fresh">Fresh</option>
+                                            <option value="Leftover">Leftover</option>
+                                            <option value="Near Expiry">Near Expiry</option>
+                                            <option value="Preserved">Preserved</option>
+                                            <option value="Slightly Used">Slightly Used</option>
+                                            <option value="Spoiled">Spoiled</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                        <div class="error-message text-danger small mt-1"></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="mb-4 col-md-6">
+                                            <label class="form-label donate-label">Expiry Date (if
+                                                applicable)</label>
+                                            <input class="form-control donate-input" type="date" name="expDate">
+                                            <div class="error-message text-danger small mt-1"></div>
+                                        </div>
+                                        <div class="mb-4 col-md-6">
+                                            <label class="form-label donate-label">Expiry Time (if
+                                                applicable)</label>
+                                            <input class="form-control donate-input" type="time" name="expTime">
+                                            <div class="error-message text-danger small mt-1"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="mb-4 col-md-6">
+                                            <label class="form-label donate-label">Cooked Date</label>
+                                            <input class="form-control donate-input" type="date" name="cookDate"
+                                                id="cookDate">
+                                            <div class="error-message text-danger small mt-1"></div>
+                                        </div>
+                                        <div class="mb-4 col-md-6">
+                                            <label class="form-label donate-label">Cooked Time</label>
+                                            <input class="form-control donate-input" type="time" name="cookTime">
+                                            <div class="error-message text-danger small mt-1"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label donate-label">Food Image</label>
+                                        <input accept="image/*" class="form-control donate-input" id="itemImages"
+                                            name="itemImages[]" type="file" multiple>
+                                        <small class="text-muted form-text">Upload an image of the food you're
+                                            donating</small>
+                                        <div class="mt-2 imagesPreview"></div>
+                                        <div class="error-message text-danger small mt-1"></div>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary">Add now</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

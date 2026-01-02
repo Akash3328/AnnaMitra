@@ -1,0 +1,150 @@
+<%- include('../partials/header') %>
+
+<%- include('../partials/navbar-dark') %>
+
+<div class="d-flex am-dark" style="height: 95vh;">
+
+    <%- include('../partials/sidebar-dark') %>
+
+        <div class="content w-100 p-4 ngo-dashboard" style="overflow-y: auto;">
+            <div class="w-100 text-white">
+                <div class="mb-4">
+                    <h4>Your Joined NGOs</h4>
+                    <p>Discover which NGOs you have joined and leave if you want</p>
+                </div>
+                <!-- NGO Cards Section -->
+                <div class="row g-4">
+                
+                    <% if (joinedNGOs && joinedNGOs.length> 0) { %>
+                        <% joinedNGOs.forEach(ngo=> { %>
+                            <div class="col-md-4 mb-4">
+                                <div class="ngo-card p-4 rounded">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="ngo-logo bg-secondary rounded-circle me-3"
+                                            style="width: 50px; height: 50px; overflow: hidden;">
+                                            <% if (ngo.profilePicture) { %>
+                                                <img src="<%= ngo.profilePicture %>" alt="Logo" class="img-fluid rounded-circle"
+                                                    style="width: 100%; height: 100%; object-fit: cover;">
+                                            <% } else { %>
+                                                <i class="bi bi-building text-white fs-3 d-flex justify-content-center align-items-center w-100 h-100"></i>
+                                            <% } %>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-0 text-white">
+                                                <%= ngo.organizationName %>
+                                            </h5>
+                                            <small class=""><i class="bi bi-geo-alt-fill me-1"></i>
+                                                <%= ngo.city %>
+                                            </small>
+                                        </div>
+                                    </div>
+                
+                                    <p class="mb-3">
+                                        <%= ngo.about.length> 100 ? ngo.about.substring(0, 100) + "..." : ngo.about %>
+                                    </p>
+                
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class=""><i class="bi bi-people-fill me-1"></i>
+                                            <%= ngo.volunteers.length %> volunteers
+                                        </span>
+                                        <span class="text-warning"><i class="bi bi-star-fill me-1"></i>4.8/5.0</span>
+                                    </div>
+                
+                                    <p class="mb-3 text-white">Active Deliveries: <strong>
+                                            <%= ngo.donationsHandled ? ngo.donationsHandled.length : 0 %>
+                                        </strong>
+                                    </p>
+                
+                                    <div class="d-flex">
+                                        <!-- <button class="btn btn-success me-2" disabled>Joined</button> -->
+                                        <a href="/ngo/<%= ngo.userId %>" class="btn btn-dark">View Profile</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <% }) %>
+                                <% } else { %>
+                                    <div class="text-center text-muted py-5">
+                                        <h5>You haven't joined any NGOs yet.</h5>
+                                    </div>
+                                    <% } %>
+                
+                                        <!-- NGO Card -->
+                                        <!-- <div class="col-md-4">
+                                        <div class="ngo-card p-4 rounded">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="ngo-logo bg-secondary rounded-circle me-3"></div>
+                                                <div>
+                                                    <h5 class="mb-0 text-white">Food Bank Central</h5>
+                                                    <small class=" "><i class="bi bi-geo-alt-fill me-1"></i>Downtown
+                                                        Area</small>
+                                                </div>
+                                            </div>
+                                            <p class="  mb-3">Dedicated to fighting hunger by collecting and distributing food
+                                                to those in need.</p>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span class=" "><i class="bi bi-people-fill me-1"></i>150 volunteers</span>
+                                                <span class="text-warning"><i class="bi bi-star-fill me-1"></i>4.8/5.0</span>
+                                            </div>
+                                            <p class="mb-3 text-white">Active Deliveries: <strong>25</strong></p>
+                                            <div class="d-flex">
+                                                <button class="btn btn-success me-2" disabled>Joined</button>
+                                                <button class="btn btn-dark">View Profile</button>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                
+                                        <!-- NGO Card -->
+                                        <!-- <div class="col-md-4">
+                                        <div class="ngo-card p-4 rounded">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="ngo-logo bg-secondary rounded-circle me-3"></div>
+                                                <div>
+                                                    <h5 class="mb-0 text-white">Care Foundation</h5>
+                                                    <small class=" "><i class="bi bi-geo-alt-fill me-1"></i>City Center</small>
+                                                </div>
+                                            </div>
+                                            <p class="  mb-3">Working towards eliminating food waste while feeding the
+                                                underprivileged.</p>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span class=" "><i class="bi bi-people-fill me-1"></i>95 volunteers</span>
+                                                <span class="text-warning"><i class="bi bi-star-fill me-1"></i>4.7/5.0</span>
+                                            </div>
+                                            <p class="mb-3 text-white">Active Deliveries: <strong>12</strong></p>
+                                            <div class="d-flex">
+                                                <button class="btn btn-primary me-2">Request to Join</button>
+                                                <button class="btn btn-dark">View Profile</button>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                
+                                        <!-- NGO Card -->
+                                        <!-- <div class="col-md-4">
+                                        <div class="ngo-card p-4 rounded">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="ngo-logo bg-secondary rounded-circle me-3"></div>
+                                                <div>
+                                                    <h5 class="mb-0 text-white">Community Kitchen</h5>
+                                                    <small class=" "><i class="bi bi-geo-alt-fill me-1"></i>East Side</small>
+                                                </div>
+                                            </div>
+                                            <p class="  mb-3">Operates community kitchens and organizes food distribution
+                                                drives.</p>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span class=" "><i class="bi bi-people-fill me-1"></i>80 volunteers</span>
+                                                <span class="text-warning"><i class="bi bi-star-fill me-1"></i>4.5/5.0</span>
+                                            </div>
+                                            <p class="mb-3 text-white">Active Deliveries: <strong>15</strong></p>
+                                            <div class="d-flex">
+                                                <button class="btn btn-warning text-dark me-2" disabled>Request Pending</button>
+                                                <button class="btn btn-dark">View Profile</button>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                </div>
+
+
+            </div>
+        </div>
+</div>
+
+<%- include('../partials/footer') %>

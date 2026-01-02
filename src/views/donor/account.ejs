@@ -1,0 +1,478 @@
+<%- include('../partials/header') %>
+
+<%- include('../partials/navbar') %>
+
+
+<div class="main-container">
+    
+    <!-- === PAGE HEADER === -->
+    <header class="page-header">
+        <div>
+            <h1>My Account</h1>
+            <p>Manage your profile and account settings</p>
+        </div>
+        <div class="button-container">
+            <div id="btn-group-display">
+                <button id="edit-btn" class="btn btn-custom btn-custom-dark">
+                    <i class="bi bi-pencil-fill me-2"></i>Edit Profile
+                </button>
+            </div>
+            <div id="btn-group-edit">
+                <button id="save-btn" class="btn btn-custom btn-custom-dark">
+                    <i class="bi bi-check-lg me-2"></i>Save Changes
+                </button>
+                <button id="cancel-btn" class="btn btn-custom btn-custom-light">
+                    <i class="bi bi-x-lg me-2"></i>Cancel
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="row">
+
+        <!-- === LEFT COLUMN === -->
+        <div class="col-lg-4">
+            <!-- Profile Card -->
+            <div class="profile-card text-center">
+                <div class="profile-avatar">
+                    <% if (donorProfile.profilePicture) { %>
+                        <img src="/<%= donorProfile.profilePicture %>" 
+                             style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+                    <% } else { %>
+                        <%= donorProfile.firstName[0] + donorProfile.lastName[0] %>
+                    <% } %>
+
+                    <label for="profileImage" class="profile-avatar-edit">
+                        <i class="bi bi-pencil-fill"></i>
+                    </label>
+                    <input type="file" id="profileImage" accept="image/*" style="display: none;" />
+                </div>
+
+                <h2 class="profile-name" id="display-full-name">
+                    <%= donorProfile.firstName %> <%= donorProfile.lastName %>
+                </h2>
+
+                <p class="profile-subtext" id="display-business-name-sub">
+                    <%= donorProfile.donorSourceName || "—" %>
+                </p>
+            </div>
+
+            <!-- Account Statistics Card -->
+            <div class="profile-card">
+                <h3 class="card-header-title">Account Statistics</h3>
+
+                <div class="stat-item">
+                    <span class="label"><i class="bi bi-calendar-check"></i>Member Since</span>
+                    <span class="value" id="display-member-since">
+                        <%= user.createdAt.toDateString() %>
+                    </span>
+                </div>
+                <hr>
+
+                <div class="stat-item">
+                    <span class="label"><i class="bi bi-gift"></i>Total Donations</span>
+                    <span class="value" id="display-total-donations">
+                        <%= donorProfile.donationHistory?.length || 0 %>
+                    </span>
+                </div>
+                <hr>
+
+                <div class="stat-item">
+                    <span class="label"><i class="bi bi-person-badge"></i>Account Type</span>
+                    <span class="value" id="display-account-type">
+                        <%= user.role %>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Account Settings Card -->
+            <div class="profile-card">
+                <h3 class="card-header-title">Account Settings</h3>
+                
+                <a style="cursor: pointer;" class="settings-link" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                    <span>Change Password</span>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+                <a style="cursor: pointer;" class="settings-link">
+                    <span>Language Preferences</span>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+                <a style="cursor: pointer;" class="settings-link">
+                    <span>Notification Settings</span>
+                    <!-- From Uiverse.io by guilhermeyohan --> 
+                    <div class="checkbox-apple">
+                        <input class="yep" id="notificationsToggler" type="checkbox" <%= donorProfile.notificationsEnabled ? "checked" : "" %> >
+                        <label for="notificationsToggler"></label>
+                    </div>
+                </a>
+                
+                <hr class="my-4">
+                
+                <button class="btn btn-custom btn-custom-danger">
+                    <i class="bi bi-trash me-2"></i>Delete Account
+                </button>
+            </div>
+        </div>
+
+        <!-- === RIGHT COLUMN === -->
+        <div class="col-lg-8">
+
+            <!-- Personal Information Card -->
+            <div class="profile-card">
+                <h3 class="card-header-title">Personal Information</h3>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label classs="form-label">First Name</label>
+                            <p class="display-field" id="display-first-name">
+                                <i class="bi bi-person"></i>
+                                <%= donorProfile.firstName %>
+                            </p>
+                            <input type="text" class="form-control-custom edit-field" id="edit-first-name" 
+                                   value="<%= donorProfile.firstName %>">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label classs="form-label">Last Name</label>
+                            <p class="display-field" id="display-last-name">
+                                <i class="bi bi-person"></i>
+                                <%= donorProfile.lastName %>
+                            </p>
+                            <input type="text" class="form-control-custom edit-field" id="edit-last-name" 
+                                   value="<%= donorProfile.lastName %>">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label classs="form-label">Business/Source Name</label>
+                            <p class="display-field" id="display-business-name">
+                                <i class="bi bi-building"></i>
+                                <%= donorProfile.donorSourceName || "—" %>
+                            </p>
+                            <input type="text" class="form-control-custom edit-field" id="edit-business-name" 
+                                   value="<%= donorProfile.donorSourceName %>">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label classs="form-label">Email</label>
+                            <p class="display-field" id="display-email">
+                                <i class="bi bi-envelope"></i>
+                                <%= user.email %>
+                            </p>
+                            <input type="email" class="form-control-custom edit-field" id="edit-email" 
+                                   value="<%= user.email %>">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label classs="form-label">Contact Number</label>
+                            <p class="display-field" id="display-contact">
+                                <i class="bi bi-telephone"></i>
+                                <%= user.contact %>
+                            </p>
+                            <input type="tel" class="form-control-custom edit-field" id="edit-contact" 
+                                   value="<%= user.contact %>">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label classs="form-label">About</label>
+                    <p class="display-field about" id="display-about">
+                        <i class="bi bi-info-circle"></i>
+                        <%= donorProfile.about || "No about info added." %>
+                    </p>
+                    <textarea class="form-control-custom edit-field" id="edit-about" rows="4">
+                        <%= donorProfile.about %>
+                    </textarea>
+                </div>
+
+            </div>
+
+            <!-- Address Information Card -->
+            <div class="profile-card">
+                <h3 class="card-header-title">Address Information</h3>
+
+                <div class="form-group">
+                    <label classs="form-label">Street Address</label>
+                    <p class="display-field" id="display-street">
+                        <i class="bi bi-geo-alt"></i>
+                        <%= donorProfile.address %>
+                    </p>
+                    <input type="text" class="form-control-custom edit-field" id="edit-street" 
+                           value="<%= donorProfile.address %>">
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label classs="form-label">City</label>
+                            <p class="display-field" id="display-city">
+                                <%= donorProfile.city %>
+                            </p>
+                            <input type="text" class="form-control-custom edit-field" id="edit-city"
+                                   value="<%= donorProfile.city %>">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label classs="form-label">State</label>
+                            <p class="display-field" id="display-state">
+                                <%= donorProfile.state %>
+                            </p>
+                            <input type="text" class="form-control-custom edit-field" id="edit-state"
+                                   value="<%= donorProfile.state %>">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label classs="form-label">Pincode</label>
+                            <p class="display-field" id="display-pincode">
+                                <%= donorProfile.pincode %>
+                            </p>
+                            <input type="text" class="form-control-custom edit-field" id="edit-pincode"
+                                   value="<%= donorProfile.pincode %>">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- === REVIEWS SECTION === -->
+    <div class="row">
+        <div class="col-12">
+            <div class="profile-card">
+                <h3 class="card-header-title">Reviews & Ratings</h3>
+
+                <!-- Average Rating Summary -->
+                <div class="average-rating-summary">
+                    <div class="average-rating-score">
+                        <%= donorProfile.feedbackReceived?.length ? "4.5" : "0" %>
+                    </div>
+                    <div class="average-rating-details">
+                        <div class="star-rating">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-half"></i>
+                        </div>
+                        <div class="total-reviews">
+                            Based on <%= donorProfile.feedbackReceived?.length || 0 %> reviews
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Individual Reviews List -->
+                <div class="reviews-list">
+
+                    <% donorProfile.feedbackReceived?.forEach(review => { %>
+                        <div class="review-item">
+                            <div class="review-header">
+                                <a href="#" class="review-avatar">
+                                    <%= review.authorInitials || "U" %>
+                                </a>
+                                <div class="review-author-details">
+                                    <a href="#" class="review-author">
+                                        <%= review.authorName || "Anonymous" %>
+                                    </a>
+                                    <span class="review-date">
+                                        <%= review.createdAt ? review.createdAt.toDateString() : "" %>
+                                    </span>
+                                </div>
+                                <div class="star-rating">
+                                    <i class="bi bi-star-fill"></i>
+                                </div>
+                            </div>
+                            <div class="review-body">
+                                <p><%= review.comment %></p>
+                            </div>
+                        </div>
+                    <% }) %>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/changePasswordModal') %>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        const editBtn = document.getElementById('edit-btn');
+        const saveBtn = document.getElementById('save-btn');
+        const cancelBtn = document.getElementById('cancel-btn');
+        const body = document.body;
+
+        // Define all the fields that can be toggled
+        // This maps the 'display' element ID to the 'edit' element ID
+        const fields = {
+            'display-first-name': 'edit-first-name',
+            'display-last-name': 'edit-last-name',
+            'display-business-name': 'edit-business-name',
+            'display-email': 'edit-email',
+            'display-contact': 'edit-contact',
+            'display-about': 'edit-about',
+            'display-street': 'edit-street',
+            'display-city': 'edit-city',
+            'display-state': 'edit-state',
+            'display-pincode': 'edit-pincode',
+        };
+        
+        // Helper fields that are derived from others
+        const derivedFields = {
+            'display-full-name': ['edit-first-name', 'edit-last-name'],
+            'display-business-name-sub': 'edit-business-name'
+        };
+
+        // --- Edit Button Clicked ---
+        editBtn.addEventListener('click', () => {
+            // 1. Copy current display values into edit fields
+            for (const displayId in fields) {
+                const editId = fields[displayId];
+                const displayEl = document.getElementById(displayId);
+                const editEl = document.getElementById(editId);
+                
+                // Use textContent for most, but .value for form elements
+                const displayValue = displayEl.tagName === 'P' ? displayEl.textContent.trim() : displayEl.value;
+                
+                // Handle the icon text if it's there
+                // A simple way is to just grab the last text node
+                let cleanValue = displayEl.textContent.trim();
+                if(displayEl.querySelector('i')) {
+                    // If there's an icon, find the text node after it
+                    cleanValue = displayEl.childNodes[displayEl.childNodes.length - 1].textContent.trim();
+                }
+                
+                // Special case for 'about' which has different formatting
+                if(displayId === 'display-about') {
+                        cleanValue = displayEl.textContent.replace(/\s+/g, ' ').trim();
+                }
+
+                editEl.value = cleanValue;
+            }
+
+            // 2. Switch mode
+            body.classList.remove('display-mode');
+            body.classList.add('edit-mode');        
+        });
+
+        // --- Save Button Clicked ---
+        saveBtn.addEventListener('click', () => {
+
+            const userRole = '<%= user.role %>';
+
+            const formData = new FormData();
+
+            const profileImageFile = document.getElementById('profileImage').files[0];
+            if (profileImageFile) {
+                formData.append('profileImage', profileImageFile);
+            }
+
+            formData.append('user[email]', document.getElementById('edit-email').value);
+            formData.append('user[contact]', document.getElementById('edit-contact').value);
+
+            formData.append('donorProfile[firstName]', document.getElementById('edit-first-name').value);
+            formData.append('donorProfile[lastName]', document.getElementById('edit-last-name').value);
+            formData.append('donorProfile[donorSourceName]', document.getElementById('edit-business-name').value);
+            formData.append('donorProfile[about]', document.getElementById('edit-about').value);
+            formData.append('donorProfile[address]', document.getElementById('edit-street').value);
+            formData.append('donorProfile[city]', document.getElementById('edit-city').value);
+            formData.append('donorProfile[state]', document.getElementById('edit-state').value);
+            formData.append('donorProfile[pincode]', document.getElementById('edit-pincode').value);
+
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="bi bi-arrow-repeat me-2"></i>Saving...';
+            console.log('Data to be sent:', Array.from(formData.entries()));
+
+            fetch(`/donor/`, {
+                method: 'PUT',
+                body: formData
+            })
+            .then(res => {
+                if (!res.ok) {
+                    showAlert('danger', 'Failed to update profile.');
+                }
+                return res.json();
+            })
+            .then(data => {
+                showAlert('success', 'Profile updated successfully.');
+
+                for (const displayId in fields) {
+                    const editId = fields[displayId];
+                    const displayEl = document.getElementById(displayId);
+                    const editEl = document.getElementById(editId);
+                    
+                    const newValue = editEl.value;
+
+                    const iconEl = displayEl.querySelector('i');
+                    if (iconEl) {
+                        displayEl.innerHTML = ` ${newValue}`; 
+                        displayEl.prepend(iconEl); 
+                    } else {
+                        displayEl.textContent = newValue;
+                    }
+                }
+
+                document.getElementById('display-full-name').textContent = 
+                    `${document.getElementById('edit-first-name').value} ${document.getElementById('edit-last-name').value}`;
+                
+                document.getElementById('display-business-name-sub').textContent = 
+                    document.getElementById('edit-business-name').value;
+                
+                // 3. Update the 'original' avatar content to the new one
+                // originalAvatarContent = profileAvatarPreview.innerHTML;
+
+                // 4. Switch mode
+                body.classList.remove('edit-mode');
+                body.classList.add('display-mode');
+            })
+            .catch(err => {
+                console.error('Error updating profile:', err);
+                showAlert('danger', 'An error occurred while updating profile.');
+            })
+            .finally(() => {
+                // --- UI: Reset button state ---
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="bi bi-check-lg me-2"></i>Save Changes';
+                // Clear the file input
+                document.getElementById('profileImage').value = ''; 
+            });
+        });
+
+        // --- Cancel Button Clicked ---
+        cancelBtn.addEventListener('click', () => {
+            // 1. Just switch mode, don't save any data
+            body.classList.remove('edit-mode');
+            body.classList.add('display-mode');
+        });
+    });
+</script>
+
+
+<%- include('../partials/footer') %>

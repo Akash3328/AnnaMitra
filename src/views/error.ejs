@@ -1,0 +1,25 @@
+<%- include('./partials/header') %>
+
+<%- include('./partials/navbar') %>
+
+<div class="container p-4" style="height: 65vh;" role="alert">
+    <!-- display error image -->
+    <div class="d-flex flex-column align-items-center justify-content-center h-100">
+        <div class="alert alert-danger">
+            <h4 class="alert-heading">Error!</h4>
+            <p> <%= error %> </p>
+        </div>
+        <button
+            class="btn btn-hover-secondary-subtle d-flex align-items-center gap-2 text-dark border border-secondary-subtle font-weight-bold"
+            onclick="window.history.back()" style="font-weight: 500;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="scale: 0.8;">
+                <path d="M12 19l-7-7 7-7" />
+                <path d="M19 12H5" />
+            </svg>
+            Go Back
+        </button>
+    </div>
+</div>
+
+<%- include('./partials/footer') %>

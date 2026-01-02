@@ -1,0 +1,284 @@
+<!-- now i have created routes for the volunteer role and want to implement it's functionality, 
+so first i have created the dummy/template of dashboard page with dummy data. so first read 
+the dashboard file in volunteer views and then implement the logic to  -->
+
+<%- include('../partials/header') %>
+
+<%- include('../partials/navbar-dark') %>
+
+<div class="d-flex am-dark" style="height: 95vh;">
+    
+    <%- include('../partials/sidebar-dark') %>
+
+    <div class="content w-100 p-4 ngo-dashboard" style="overflow-y: auto;">
+        <div class="w-100 text-white">
+            <div class="mb-4">
+                <h4>Dashboard</h4>
+                <p>Welcome back, <%= volunteerProfile.firstName %> <%= volunteerProfile.lastName %></p>
+            </div>
+            <div class="py-2">
+                <div class="row justify-content-around" id="statCardsRow">
+                    <!-- <div class="row"> -->
+                    <div class="col-md-6 d-flex justify-content-around">
+                        <div class="card text-center mb-4">
+                            <div class="my-4">
+                                <h2><%= stats.pendingPickups %></h2>
+                                <p class="mb-0 text-white">Pending Pickups</p>
+                            </div>
+                        </div>
+                        <div class="card text-center mb-4">
+                            <div class="my-4">
+                                <h2><%= stats.pendingDeliveries %></h2>
+                                <p class="mb-0 text-white">Pending Deliveries</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-around">
+                        <div class="card text-center mb-4">
+                            <div class="my-4">
+                                <h2><%= stats.completedDonations %></h2>
+                                <p class="mb-0 text-white">Completed Donations</p>
+                            </div>
+                        </div>
+                        <div class="card text-center mb-4">
+                            <div class="my-4">
+                                <h2><%= stats.ngosJoined %></h2>
+                                <p class="mb-0 text-white">Ngos Joined</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <div class="mb-5 p-4 rounded" style="background-color: var(--am-darktheme-light);">
+                <div class="d-flex justify-content-between align-items-center border-bottom border-secondary mb-4"
+                    style="color: var(--am-darktheme-font);">
+                    <h3>Current Assignments</h3>
+                    <a href="/volunteer/assigned-tasks" style="text-decoration: none; color: var(--am-darktheme-font);">
+                        <h5>View all</h5>
+                    </a>
+                </div>
+                <div class="table-responsive am-dark-table">
+                    <table class="table align-middle rounded-2 shadow-sm overflow-hidden border-secondary">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Food Items</th>
+                                <th>Source</th>
+                                <th>Pickup Location</th>
+                                <th>Delivery Location</th>
+                                <th>Images</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="all-table-body">
+                            <% if (!assignedTeams || assignedTeams.length===0) { %>
+                                <tr>
+                                    <td colspan="9" class="text-center py-4 text-muted">
+                                        No active assignments found.
+                                    </td>
+                                </tr>
+                                <% } %>
+                    
+                                    <% assignedTeams.forEach((team, index)=> {
+                                        const donation = team.donationId;
+                                        const foodItems = donation.items || [];
+                                        const itemNames = foodItems.map(item => item.name);
+                                        %>
+                                        <tr>
+                                            <!-- # -->
+                                            <td>
+                                                <%= index + 1 %>
+                                            </td>
+                    
+                                            <!-- Title -->
+                                            <td class="col-title">
+                                                <%= donation.title %>
+                                            </td>
+                    
+                                            <!-- Food Items -->
+                                            <td class="col-items">
+                                                <i class="bi bi-box-seam pe-1" style="color: #bababa; font-size: 0.9rem;"></i>
+                                                <% if (itemNames.length> 0) { %>
+                                                    <%= itemNames.join(', ') %>
+                                    <% } else { %>
+                                        <span class="text-muted small">No items</span>
+                                    <% } %>
+                                </td>
+                    
+                                <!-- ✅ Source -->
+                                <td>
+                                    <span class="badge bg-info text-dark px-3 py-2 rounded-4">
+                                        <%= donation.source || ' N/A' %>
+                                                        </span>
+                                            </td>
+                    
+                                            <!-- ✅ Pickup Location (Donation Address) -->
+                                            <td class="col-location">
+                                                <i class="fa-solid fa-location-dot pe-1 text-danger"></i>
+                                                <%= donation.address %>, <%= donation.city %>, <%= donation.state %>
+                                            </td>
+                    
+                                            <!-- ✅ Delivery Location (From DonationTeam) -->
+                                            <td class="col-location">
+                                                <% if (team.deliverySchedule && team.deliverySchedule.location) { %>
+                                                    <i class="fa-solid fa-truck pe-1 text-success"></i>
+                                                    <%= team.deliverySchedule.location %>
+                                                        <% } else { %>
+                                                            <span class="text-muted small">Not assigned yet</span>
+                                                            <% } %>
+                                            </td>
+                    
+                                            <!-- Images -->
+                                            <td class="col-images">
+                                                <% if (donation.images && donation.images.length) { %>
+                                                    <div class="border border-secondary rounded p-1 text-center mx-auto"
+                                                        style="max-width: 100px;">
+                                                        <img src="/<%= donation.images[0] %>" alt="food item" class="img-fluid">
+                                                        <div class="text-center hover-blue" data-bs-toggle="modal"
+                                                            data-bs-target="#images-modal-<%= donation._id %>">
+                                                            View all
+                                                        </div>
+                                                    </div>
+                                                    <% } else { %>
+                                                        <span class="text-muted small">No images</span>
+                                                        <% } %>
+                                            </td>
+                    
+                                            <!-- Actions -->
+                                            <td>
+                                                <div class="mx-auto text-center">
+                                                    <a href="/donations/<%= donation._id %>" class="btn btn-sm btn-outline-primary m-1"
+                                                        title="View">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                    
+                                        <!-- Images Modal -->
+                                        <div class="modal fade" id="images-modal-<%= donation._id %>" tabindex="-1">
+                                            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Donation Images</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body d-flex flex-wrap gap-2">
+                                                        <% (donation.images || []).forEach(function(img) { %>
+                                                            <img src="/<%= img %>" class="img-fluid rounded" style="max-width: 150px;">
+                                                            <% }); %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                    
+                                        <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Top NGOs -->
+            <div class="mb-5 p-4 rounded" style="background-color: var(--am-darktheme-light);">
+                <div class="d-flex justify-content-between align-items-center border-bottom border-secondary mb-4"
+                    style="color: var(--am-darktheme-font);">
+                    <h3>Top NGOs</h3>
+                    <a href="/volunteer/ngos" style="text-decoration: none; color: var(--am-darktheme-font);">
+                        <h5>View all</h5>
+                    </a>
+                </div>
+                <div class="table-responsive am-dark-table">
+                    <table class="table align-middle rounded-2 shadow-sm overflow-hidden border-secondary">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Profile</th>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Donations Completed</th>
+                                <th>Volunteers</th>
+                                <th>Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (!topNGOs || topNGOs.length===0) { %>
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted py-4">
+                                        No NGOs found.
+                                    </td>
+                                </tr>
+                                <% } %>
+                    
+                                    <% topNGOs.forEach((ngo, index)=> {
+                                        const donationCount = ngo.donationsHandled?.length || 0;
+                                        const volunteerCount = ngo.volunteers?.length || 0;
+                                        const ratingCount = ngo.ngoFeedbackReceived?.length || 0;
+                    
+                                        // Basic Rating Logic (out of 5)
+                                        const rating = ratingCount === 0 ? 0 : Math.min(5, (ratingCount * 0.5)).toFixed(1);
+                                        const ratingWidth = (rating / 5) * 100;
+                                        %>
+                                        <tr>
+                                            <!-- # -->
+                                            <td>
+                                                <%= index + 1 %>
+                                            </td>
+                    
+                                            <!-- Profile -->
+                                            <td>
+                                                <img src="<%= ngo.profilePicture ? '/' + ngo.profilePicture : '/images/default-ngo.png' %>"
+                                                    alt="Profile" class="rounded-circle" width="50" height="50">
+                                            </td>
+                    
+                                            <!-- Name -->
+                                            <td>
+                                                <%= ngo.organizationName %>
+                                            </td>
+                    
+                                            <!-- Contact -->
+                                            <td>
+                                                <i class="fas fa-phone-alt me-1" style="color: #bababa;"></i>
+                                                +91 <%= ngo.userId?.contact || "N/A" %>
+                                            </td>
+                    
+                                            <!-- Donations Completed -->
+                                            <td>
+                                                <span class="badge badge-type rounded-4 px-3 py-2 m-1 text-white"
+                                                    style="font-size: 0.8rem;">
+                                                    <%= donationCount %>
+                                                </span>
+                                            </td>
+                    
+                                            <!-- Volunteers -->
+                                            <td>
+                                                <span class="badge bg-primary px-3 py-2 rounded-pill">
+                                                    <%= volunteerCount %>
+                                                </span>
+                                            </td>
+                    
+                                            <!-- Rating -->
+                                            <td>
+                                                <div class="star-rating" title="<%= rating %>">
+                                                    <div class="stars-background">
+                                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                                    </div>
+                                                    <div class="stars-foreground" style="width: <%= ratingWidth %>%;">
+                                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                        </tbody>
+                    
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

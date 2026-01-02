@@ -1,0 +1,89 @@
+    <div id="alertContainer" class="position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index: 1055; width: 100%; max-width: 600px;"></div>
+    
+    <script src="/js/utils.js"></script>
+    <script src="/js/validators.js"></script>
+    <script src="/js/listeners.js"></script>
+    <script src="/js/script.js"></script>
+
+    <% if (message) { %>
+        <script>
+            window.addEventListener('DOMContentLoaded', () => {
+                showAlert('<%= messageType %>', '<%= message %>');
+            });
+        </script>
+    <% } %>
+
+    <footer class="donate-footer">
+        <header>
+            <p>THANKS FOR VISIT</p>
+        </header>
+        <div class="container">
+            <div class="mb-4 row">
+                <div class="mb-3 mb-lg-0 col-lg-4 col-md-6">
+                    <h5 class="donate-footer-title">Quick Links</h5>
+                    <ul class="donate-footer-list">
+                        <li class="mb-2"><a href="/" class="donate-footer-link"><i
+                                    class="fas fa-chevron-right me-2 donate-footer-icon"></i>Home</a></li>
+                        <li class="mb-2"><a href="/about" class="donate-footer-link"><i
+                                    class="fas fa-chevron-right me-2 donate-footer-icon"></i>About Us</a></li>
+                        <li class="mb-2"><a href="/contact" class="donate-footer-link"><i
+                                    class="fas fa-chevron-right me-2 donate-footer-icon"></i>Contact Us</a></li>
+                        <li class="mb-2"><a href="#" class="donate-footer-link"><i
+                                    class="fas fa-chevron-right me-2 donate-footer-icon"></i>Donate Food</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mb-4 mb-lg-0 col-lg-4 col-md-6">
+                    <h5 class="donate-footer-title">Contact</h5>
+                    <ul class="donate-footer-list">
+                        <li class="mb-3 donate-footer-contact"><a href="mailto:info@annasetu.org"
+                                class="donate-footer-contact-link">
+                                <div class="donate-footer-contact-icon-bg">
+                                    <i class="fas fa-envelope donate-footer-contact-icon"></i>
+                                </div>
+                                <span>info@annasetu.org</span>
+                            </a></li>
+                        <li class="mb-3 donate-footer-contact"><a href="https://wa.me/919876543210"
+                                class="donate-footer-contact-link">
+                                <div class="donate-footer-contact-icon-bg">
+                                    <i class="fab fa-whatsapp donate-footer-contact-icon"></i>
+                                </div><span>WhatsApp Us</span>
+                            </a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="donate-footer-title">Connect With Us</h5>
+                    <div class="d-flex flex-wrap mb-3">
+                        <link rel="stylesheet"
+                            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+                        <a href="https://facebook.com" class="me-3 mb-2 donate-social-link donate-facebook">
+                            <i class="fab fa-facebook-f donate-social-icon"></i>
+                        </a>
+                        <a href="https://twitter.com" class="me-3 mb-3 donate-social-link donate-twitter">
+                            <i class="fab fa-twitter donate-social-icon"></i>
+                        </a>
+                        <a href="https://instagram.com" class="me-3 mb-3 donate-social-link donate-instagram">
+                            <i class="fab fa-instagram donate-social-icon"></i>
+                        </a>
+                        <a href="mailto:info@annasetu.org" class="me-3 mb-3 donate-social-link donate-email">
+                            <i class="fas fa-envelope donate-social-icon"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr class="donate-footer-hr">
+            <div class="row">
+                <div class="mb-2 mb-md-0 col-md-6">
+                    <p class="mb-0 donate-footer-copyright"> © 2025 Annasetu. All rights
+                        reserved.</p>
+                </div>
+                <div class="text-md-end col-md-6">
+                    <a href="/privacy" class="donate-footer-policy">Privacy Policy</a>
+                    <a href="/terms" class="donate-footer-policy">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+<!-- Transparent Modal for viewing images -->
+<div class="modal fade" id="images-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content bg-transparent blur-bg border-0">
+            <div class="modal-header" style="border: none;">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body position-relative text-center my-3 p-0">
+                <!-- Arrows -->
+                <div class="row justify-content-center">
+                    <div class="col-10">
+                        <button class="btn btn-info position-absolute top-50 start-0 translate-middle-y" id="prevImage">
+                            &#10094;
+                        </button>
+                        <img id="viewerImage" src="/images/food-donation-1.jpg" class="img-fluid rounded shadow">
+                        <button class="btn btn-info position-absolute top-50 end-0 translate-middle-y" id="nextImage">
+                            &#10095;
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

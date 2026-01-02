@@ -1,0 +1,97 @@
+<%- include('../partials/header') %>
+
+<%- include('../partials/navbar-dark') %>
+
+<div class="d-flex am-dark" style="height: 95vh;">
+    <%- include('../partials/sidebar-dark'); %>
+    
+    <div class="content w-100 p-4 ngo-dashboard" style="overflow-y: auto;">
+        <div class="w-100 text-white">
+            <div class="mb-4">
+                <h4>Volunteer Requests</h4>
+                <p>Manage requests of volunteers who wants to join your NGO and contribute in food donations.</p>
+            </div>
+            <!-- Joining Requests Section -->
+            <div class="mb-5 p-4 rounded" style="background-color: var(--am-darktheme-light);">
+                <div class="d-flex justify-content-between align-items-center border-bottom border-secondary mb-4"
+                    style="color: var(--am-darktheme-font);">
+                    <h3>Volunteer Requests</h3>
+                    <a href="/ngo/joining-requests" style="text-decoration: none; color: var(--am-darktheme-font);">
+                        <h5>View all</h5>
+                    </a>
+                </div>
+                <div class="p-0">
+                
+                    <% requests.forEach(req=> { %>
+                
+                        <div class="notification-item d-flex align-items-start gap-3 rounded p-3 mb-3">
+                            <img src="<%= req.profilePicture || 'https://via.placeholder.com/48' %>"
+                                alt="Food For All Foundation" class="rounded-circle" width="48" height="48">
+                
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <div class="fw-semibold">
+                                        <%= req.firstName %>
+                                            <%= req.lastName %>
+                                    </div>
+                                    <span class="small">
+                                        <%= new Date(req.request.requestedAt).toLocaleString() %>
+                                    </span>
+                                </div>
+                
+                                <!-- ✅ ONLY THIS LINE IS CHANGED (Message → Address with Location Icon) -->
+                                <div class="mb-2">
+                                    <i class="bi bi-geo-alt-fill me-1"></i>
+                                    <%= req.address %>, <%= req.city %>, <%= req.state %>
+                                </div>
+                
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-success btn-sm"
+                                        onclick="handleJoinRequest('<%= req.request._id %>', 'accept')">
+                                        <i class="bi bi-check2 me-2"></i>Accept
+                                    </button>
+                
+                                    <button class="btn btn-danger btn-sm"
+                                        onclick="handleJoinRequest('<%= req.request._id %>', 'reject')">
+                                        <i class="bi bi-x me-2"></i>Reject
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <% }) %>
+                
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // Handle Accept/Reject Join Request
+    async function handleJoinRequest(requestId, action) {
+        try {
+            const response = await fetch(`/ngo/requests/${requestId}/${action}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                showAlert('success', data.message);
+                location.reload();
+            } else {
+                showAlert('danger', `Error: ${data.message}`);
+            }
+        } catch (error) {
+            console.error('Error handling join request:', error);
+            alert('An error occurred. Please try again.');
+        }
+    }
+</script>
+
+<%- include('../partials/footer') %>

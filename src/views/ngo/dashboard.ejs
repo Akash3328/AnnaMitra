@@ -1,0 +1,242 @@
+<%- include('../partials/header') %>
+
+<%- include('../partials/navbar-dark') %>
+
+<div class="d-flex am-dark" style="height: 95vh;">
+    <%- include('../partials/sidebar-dark'); %>
+    
+    <div class="content w-100 p-4 ngo-dashboard" style="overflow-y: auto;">
+        <div class="w-100 text-white">
+            <div class="mb-4">
+                <h4>Dashboard</h4>
+                <p>Welcome back, Hardip</p>
+            </div>
+            <div class="py-2">
+                <div class="row justify-content-around" id="statCardsRow">
+                    <!-- <div class="row"> -->
+                    <div class="col-md-6 d-flex justify-content-around">
+                        <div class="card text-center mb-4">
+                            <div class="my-4">
+                                <h2><%= availableDonationsCount %></h2>
+                                <p class="mb-0 text-white">Available Donations</p>
+                            </div>
+                        </div>
+                        <div class="card text-center mb-4">
+                            <div class="my-4">
+                                <h2><%= activeDonationsCount %></h2>
+                                <p class="mb-0 text-white">Active Donations</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-around">
+                        <div class="card text-center mb-4">
+                            <div class="my-4">
+                                <h2><%= completedDonationsCount %></h2>
+                                <p class="mb-0 text-white">Complated Donations</p>
+                            </div>
+                        </div>
+                        <div class="card text-center mb-4">
+                            <div class="my-4">
+                                <h2><%= totalVolunteers %></h2>
+                                <p class="mb-0 text-white">Total Volunteers</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- Active Donations -->
+            <div class="mb-5 p-4 rounded" style="background-color: var(--am-darktheme-light);">
+                <div class="d-flex justify-content-between align-items-center border-bottom border-secondary mb-4"
+                    style="color: var(--am-darktheme-font);">
+                    <h3>Active Donations</h3>
+                    <a href="/ngo/my-donations/" style="text-decoration: none; color: var(--am-darktheme-font);">
+                        <h5>View all</h5>
+                    </a>
+                </div>
+                <div class="table-responsive">
+                    <div class="d-flex g-4 active-donation-cards text-white">
+                        <% if (activeDonations.length===0) { %>
+                            <p class="">No active donations found.</p>
+                            <% } %>
+            
+                                <% activeDonations.forEach(donation=> { %>
+                                    <div class="me-4" style="min-width: 350px; max-width: 350px;">
+                                        <div class="card h-100 shadow-sm border-0 overflow-hidden">
+            
+                                            <img src="<%= donation.images[0] %>" class="card-img-top" alt="Donation Image">
+            
+                                            <div class="card-body d-flex flex-column">
+                                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                                    <h5 class="card-title fw-semibold text-truncate-1 mb-0">
+                                                        <%= donation.title %>
+                                                    </h5>
+            
+                                                    <span class="badge-status badge-<%= donation.status.toLowerCase() %>">
+                                                        <%= donation.status %>
+                                                    </span>
+                                                </div>
+            
+                                                <p class="mb-3">
+                                                    <%= donation.source %>
+                                                </p>
+            
+                                                <ul class="list-unstyled mb-4">
+                                                    <li class="d-flex align-items-center mb-2">
+                                                        <i class="bi bi-geo-alt text-secondary me-2"></i>
+                                                        <span class="text-truncate-1">
+                                                            <%= donation.address %>, <%= donation.city %>
+                                                        </span>
+                                                    </li>
+                                                    <li class="d-flex align-items-center mb-2">
+                                                        <i class="bi bi-telephone text-secondary me-2"></i>
+                                                        <span>
+                                                            <%= donation.contact %>
+                                                        </span>
+                                                    </li>
+                                                    <li class="d-flex align-items-center mb-2">
+                                                        <i class="bi bi-box-seam text-secondary me-2"></i>
+                                                        <span>
+                                                            <%= donation.items.length %> items
+                                                        </span>
+                                                    </li>
+                                                    <li class="d-flex align-items-center">
+                                                        <i class="bi bi-calendar-event text-secondary me-2"></i>
+                                                        <span>
+                                                            Expires:
+                                                            <%= donation.items[0]?.cookedDate?.toISOString().split("T")[0] %>
+                                                        </span>
+                                                    </li>
+                                                </ul>
+            
+                                                <div class="d-flex gap-2 mt-auto">
+                                                    <a href="/donations/<%= donation._id %>" class="btn btn-view flex-fill">View</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }) %>
+            
+                    </div>
+                </div>
+            </div>
+            <!-- New Donations -->
+            <div class="mb-5 p-4 rounded" style="background-color: var(--am-darktheme-light);">
+                <div class="d-flex justify-content-between align-items-center border-bottom border-secondary mb-4"
+                    style="color: var(--am-darktheme-font);">
+                    <h3>New Donations</h3>
+                    <a href="/donations/" style="text-decoration: none; color: var(--am-darktheme-font);">
+                        <h5>View all</h5>
+                    </a>
+                </div>
+                <div class="table-responsive">
+                    <div class="d-flex g-4 active-donation-cards text-white">
+                        <% if (newDonations.length===0) { %>
+                            <p class="text-muted">No new donations available.</p>
+                            <% } %>
+            
+                                <% newDonations.forEach(donation=> { %>
+                                    <div class="me-4" style="min-width: 350px; max-width: 350px;">
+                                        <div class="card h-100 shadow-sm border-0 overflow-hidden">
+            
+                                            <img src="<%= donation.images[0] %>" class="card-img-top" alt="Donation Image">
+            
+                                            <div class="card-body d-flex flex-column">
+                                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                                    <h5 class="card-title fw-semibold text-truncate-1 mb-0">
+                                                        <%= donation.title %>
+                                                    </h5>
+            
+                                                    <span class="badge-status badge-new">New</span>
+                                                </div>
+            
+                                                <p class="mb-3">
+                                                    <%= donation.source %>
+                                                </p>
+            
+                                                <ul class="list-unstyled mb-4">
+                                                    <li class="d-flex align-items-center mb-2">
+                                                        <i class="bi bi-geo-alt text-secondary me-2"></i>
+                                                        <span class="text-truncate-1">
+                                                            <%= donation.address %>, <%= donation.city %>
+                                                        </span>
+                                                    </li>
+                                                    <li class="d-flex align-items-center mb-2">
+                                                        <i class="bi bi-telephone text-secondary me-2"></i>
+                                                        <span>
+                                                            <%= donation.contact %>
+                                                        </span>
+                                                    </li>
+                                                    <li class="d-flex align-items-center mb-2">
+                                                        <i class="bi bi-box-seam text-secondary me-2"></i>
+                                                        <span>
+                                                            <%= donation.items.length %> items
+                                                        </span>
+                                                    </li>
+                                                    <li class="d-flex align-items-center">
+                                                        <i class="bi bi-calendar-event text-secondary me-2"></i>
+                                                        <span>
+                                                            Expires:
+                                                            <%= donation.items[0]?.cookedDate?.toISOString().split("T")[0] %>
+                                                        </span>
+                                                    </li>
+                                                </ul>
+            
+                                                <div class="d-flex gap-2 mt-auto">
+                                                    <a href="/donations/<%= donation._id %>" class="btn btn-view flex-fill">View</a>
+                                                </div>
+                                            </div>
+            
+                                        </div>
+                                    </div>
+                                    <% }) %>
+            
+                    </div>
+                </div>
+            </div>
+            <!-- Volunteer Requests -->
+            <div class="mb-5 p-4 rounded" style="background-color: var(--am-darktheme-light);">
+                <div class="d-flex justify-content-between align-items-center border-bottom border-secondary mb-4"
+                    style="color: var(--am-darktheme-font);">
+                    <h3>Volunteer Requests</h3>
+                    <a href="/ngo/joining-requests" style="text-decoration: none; color: var(--am-darktheme-font);">
+                        <h5>View all</h5>
+                    </a>
+                </div>
+                <div class="p-0">
+                    <% if (volunteerRequests.length===0) { %>
+                        <p class="">No pending volunteer requests.</p>
+                        <% } %>
+            
+                            <% volunteerRequests.forEach(req=> { %>
+                                <div class="notification-item d-flex align-items-start gap-3 rounded p-3 mb-3">
+                                    <span class="rounded-circle bg-secondary d-flex align-items-center justify-content-center"
+                                        style="width:48px;height:48px;">
+                                        <%= req.volunteerId.contact.slice(-1).toUpperCase() %>
+                                    </span>
+            
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <div class="fw-semibold">Volunteer</div>
+                                            <span class="small">
+                                                <%= req.createdAt.toLocaleString() %>
+                                            </span>
+                                        </div>
+            
+                                        <div class="small mb-1">Contact: <%= req.volunteerId.contact %>
+                                        </div>
+            
+                                        <div class="mb-2">
+                                            New volunteer wants to join your NGO.
+                                        </div>
+                                    </div>
+                                </div>
+                                <% }) %>
+            
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

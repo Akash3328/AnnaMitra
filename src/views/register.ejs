@@ -1,0 +1,70 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<div class="flex-grow-1">
+    <div class="py-5 container">
+        <div class="justify-content-center row">
+            <div class="col-xl-9 col-lg-10 col-md-11">
+                <div class="card login-card">
+                    <div class="p-0 card-body">
+                        <div class="g-0 row">
+                            <div class="col-md-6 login-card-right">
+                                <div class="text-center mb-4">
+                                    <h2 class="login-title">REGISTER</h2>
+                                    <p class="login-access-desc">It's completely free</p>
+                                </div>
+                            
+                                <!-- Step 1: Role Selection -->
+                                <div id="role-step">
+                                    <div class="mb-3">
+                                        <select class="form-control login-input" id="roleSelect">
+                                            <option value="" disabled selected>Select Your Role</option>
+                                            <option value="Donor">Donor</option>
+                                            <option value="NGO">NGO</option>
+                                            <option value="Volunteer">Volunteer</option>
+                                        </select>
+                                    </div>
+                                    <button id="nextBtn" class="btn btn-primary login-btn" disabled>Next</button>
+                                </div>
+                            
+                                <!-- Step 2: Dynamic Form -->
+                                <form class="register-form" action="/auth/register" method="POST" id="register-form"
+                                    style="width: 100%; display: none;">
+                                    <div id="dynamic-fields"></div>
+                            
+                                    <!-- Change role -->
+                                    <p class="mt-3">
+                                        <a href="#" id="changeRole">Change role?</a>
+                                    </p>
+                            
+                                    <button type="submit" class="btn btn-primary login-btn">Sign Up</button>
+                                </form>
+                            
+                                <div class="text-center mt-4">
+                                    <p class="login-register-link">
+                                        Already have an account?
+                                        <a href="/auth/login" class="login-link">Login</a>
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex col-md-6 login-card-left">
+                                <div class="text-center position-relative">
+                                    <div class="login-logo-circle">
+                                        <h3 class="login-logo-text">
+                                            ANNA<br>MITRA
+                                        </h3>
+                                    </div>
+                                    <h3 class="login-welcome-title">Join Us</h3>
+                                    <p class="login-welcome-desc">Create an account to start donating</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
